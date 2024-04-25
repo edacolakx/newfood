@@ -46,7 +46,7 @@ function Root() {
   );
 }
 
-export default function App() {
+export default function AppRestorant() {
   return (
     <Provider store={store} >
 

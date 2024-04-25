@@ -1,7 +1,7 @@
-export const setName=(kullaniciadi)=>{
+export const setName=(email)=>{
     return{
         type:"SET_NAME",
-        payload:kullaniciadi
+        payload:email
     }
 }    
 export const setToken=(token)=>{
@@ -10,9 +10,9 @@ export const setToken=(token)=>{
         payload:token
     }
 }    
-export const setModal=(modal)=>{
+export const setUrun=(urun)=>{
     return{
-        type:"SET_MODAL",
-        payload:modal
+        type:"SET_URUN",
+        payload:urun
     }
 }    

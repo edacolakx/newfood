@@ -1,18 +1,21 @@
 import { View, Text,StyleSheet ,Image, Touchable, TouchableOpacity} from 'react-native'
-import React, { useState } from 'react'
+import React, { useDebugValue, useState } from 'react'
 import { Button, TextInput } from 'react-native-paper'
+import { useDispatch } from 'react-redux'
+import { setName } from '../redux/actions'
 export default function Login({navigation}) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     function onEmail(tex){setEmail(tex)}
     function onPassword(tex){setPassword(tex)}
-
+    const dispatch=useDispatch()
     function sifremiunutum() {
         navigation.navigate("Forgotpassword")
     }
 
     function userlogin() {
+      dispatch(setName(email))
       navigation.navigate("Root")
     }
 

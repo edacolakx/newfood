@@ -3,22 +3,24 @@ import React from 'react'
 import { Card } from 'react-native-paper'
 
 export default function Restorantcard(props) {
-    
   return (
-   <TouchableOpacity onPress={()=>{props.navigation.navigate("Restorantdetail")}}>
-      <Card>
+   <TouchableOpacity onPress={()=>{props.navigation.navigate("Restorant",{
+    resim:props.resim,
+    min:props.min,
+    isim:props.restoran_name
+   })}}>
         <View style={style.card}>
             <View style={{marginRight:10}}>
             <Image
                style={{ width: 90, height: 90 }}
                source={{
-                   uri: 'https://reactnative.dev/img/tiny_logo.png',
+                   uri: props.resim,
                 }}/>
             </View>
             <View>
                 <View style={{height:60}}>
 
-                 <Text style={style.text}>{props.resname}</Text>
+                 <Text style={style.text}>{props.restoran_name}</Text>
                 </View>
                 <View>
                  <Text style={{fontSize:10,color:"black"}}>Minimum sepet tutarı {props.min}</Text>
@@ -26,7 +28,6 @@ export default function Restorantcard(props) {
                 </View>
             </View>
         </View>
-      </Card>
     </TouchableOpacity>
     
   )
