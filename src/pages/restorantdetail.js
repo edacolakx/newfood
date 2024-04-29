@@ -1,12 +1,12 @@
-import { View, Text, useWindowDimensions, FlatList ,Image} from 'react-native'
+import { View, Text, useWindowDimensions, FlatList ,Image,StyleSheet} from 'react-native'
 import React from 'react'
-import { Avatar, Card } from 'react-native-paper'
+import { Avatar, Button, Card } from 'react-native-paper'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import Itemcard from '../components/itemcard'
 
 const urun = [
     {
-      id: '10',
+      id: 10,
       title: 'Hamburger',
       description:"köfte",
       fiyat:20,
@@ -14,7 +14,7 @@ const urun = [
       resim:"https://www.burgerking.com.tr/cmsfiles/products/hamburger.png?v=413"
     },
     {
-      id: '20',
+      id: 20,
       title: 'Pizza',
       description:"sucuk",
       fiyat:10,
@@ -22,7 +22,7 @@ const urun = [
       resim:"https://yemek.com/_next/image/?url=https%3A%2F%2Fcdn.yemek.com%2Fmnresize%2F1250%2F833%2Fuploads%2F2022%2F03%2Fev-usulu-pizza-yemekcom.jpg&w=1920&q=75",
     },
     {
-      id: '30',
+      id: 30,
       title: 'Çay',
       description:"earl",
       fiyat:30,
@@ -30,7 +30,7 @@ const urun = [
       resim:"https://dogukaradenizcay.com/cay_hikaye_2.jpg"
     },
     {
-      id: '40',
+      id: 40,
       title: 'Kola',
       description:"Coca Cola",
       fiyat:30,
@@ -38,7 +38,7 @@ const urun = [
       resim:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEqA87jZjZV3WKceUWE2ferxMsVxg7B9CfkkCsNpo49g&s"
     },
     {
-      id: '50',
+      id: 50,
       title: 'Trileçe',
       description:"tatlı",
       fiyat:30,
@@ -55,7 +55,7 @@ const urun = [
     return acc;
   }, {});
   const renderItem = ({ item }) => (
-    <Itemcard isim={item.title} description={item.description} fiyat={item.fiyat} resim={item.resim}></Itemcard> 
+    <Itemcard isim={item.title} description={item.description} fiyat={item.fiyat} resim={item.resim} id={item.id}></Itemcard> 
   );
 const FirstRoute = () => (
     <View style={{ flex: 1}} >
@@ -87,7 +87,7 @@ const FirstRoute = () => (
   })
 
 
-export default function Restorantdetail({route}) {
+export default function Restorantdetail({route,navigation}) {
 
 
     const [routes] = React.useState([
@@ -101,7 +101,7 @@ export default function Restorantdetail({route}) {
       const {resim,min,isim}=route.params
   return (
     <View style={{flex:1}}>
-      <View>
+      <View style={styles.content}>
             <View style={{backgroundColor:"#E72929"}}>
                 <View style={{flexDirection:"row"}}>
                     <View>
@@ -110,7 +110,7 @@ export default function Restorantdetail({route}) {
                              }} />
                     </View>
                     <View style={{marginLeft:20}}>
-                        <Text style={{color:"black",fontSize:40}}>{isim}</Text>
+                        <Text style={{color:"white",fontSize:40}}>{isim}</Text>
                         <Text>Minimum Sepet Tutarı {min}</Text>
                     </View>
                 </View>
@@ -135,6 +135,21 @@ export default function Restorantdetail({route}) {
       )}
     />
       </View>
+      <View style={styles.bottom}>
+        <Button onPress={()=>{navigation.navigate("Sepet")}}>Sepete Git</Button>
+      </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+  },
+  bottom: {
+    height: 50,
+    backgroundColor: 'red',
+  },
+});

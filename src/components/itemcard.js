@@ -2,10 +2,12 @@ import { View, Text , StyleSheet,TextInput,FlatList} from 'react-native'
 import React, { useState } from 'react'
 import { Avatar, Badge, Button, Card, FAB, Modal, PaperProvider, Portal,  } from 'react-native-paper'
 import ModalComponent from './modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { setModal } from '../redux/actions';
 
 export default function Itemcard(props) {
    
-
+const {genelResponse}=useSelector(state=>state)
 const veri=[
     {
         id:props.id,
@@ -17,9 +19,10 @@ const veri=[
 ]
  const array=[]
  const [visible, setVisible] = React.useState(false);
-   
+ const dispatch=useDispatch()
     function showModal(){
-        setVisible(true)
+      setVisible(true)
+        dispatch(setModal(true))
         array.push(veri)
         console.log(array)
     }
@@ -40,7 +43,7 @@ const veri=[
         </View>
       <Portal>
         <Modal visible={visible} onDismiss={hideModal} dismissableBackButton={true} style={styles.modal}>
-            <ModalComponent isim={props.isim} description={props.description} resim={props.resim} fiyat={props.fiyat}></ModalComponent>
+            <ModalComponent isim={props.isim} description={props.description} resim={props.resim} fiyat={props.fiyat} id={props.id}></ModalComponent>
         </Modal>
       </Portal>
     </View>

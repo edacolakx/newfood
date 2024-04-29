@@ -2,7 +2,8 @@ import { View, Text ,StyleSheet,TextInput, Image, TouchableOpacity} from 'react-
 import React, { useState } from 'react'
 import { Avatar,  FAB,Button} from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux';
-import {setUrun} from '../redux/actions'
+import {setModal, setUrun} from '../redux/actions'
+
 export default function ModalComponent(props) {
     const [text, setText] = useState('');
     const [miktar, setmiktar] = useState(1);
@@ -19,28 +20,24 @@ export default function ModalComponent(props) {
       miktar:miktar,
       fiyat:props.fiyat
     }
+
+
     function sepetteUrunVarMi(sepet, urunId) {
-      // Sepetteki ürünleri filtrele ve verilen id'ye sahip ürünü bul
       const urun = sepet.find(item => item.id === urunId);
-    
-      // Eğer ürün varsa true, yoksa false döndür
       return urun ? true : false;
     }
-    const urunSepetteVarMi = sepetteUrunVarMi(genelResponse.urun, props.id);
 
-    if (urunSepetteVarMi) {
-      console.log("Ürün sepette zaten var.");
-    } else {
-      console.log("Ürün sepette yok, eklenebilir.");
-    }    
+    const urunSepetteVarMi = sepetteUrunVarMi(genelResponse.urun, props.id);
     function sepeteekle() {
-      const updatedUrunler = [...urunler, urun]; // Yeni bir dizi oluştur
-      dispatch(setUrun(updatedUrunler)); // Yeni diziyi Redux durumuna ata
-      console.log(updatedUrunler);
       if (urunSepetteVarMi) {
         console.log("Ürün sepette zaten var.");
+        
       } else {
         console.log("Ürün sepette yok, eklenebilir.");
+        const updatedUrunler = [...urunler, urun]; // Yeni bir dizi oluştur
+        dispatch(setUrun(updatedUrunler)); // Yeni diziyi Redux durumuna ata
+        console.log(updatedUrunler);
+        dispatch(setModal(false))
       } 
     }
     

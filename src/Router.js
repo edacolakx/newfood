@@ -8,7 +8,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Profil from './pages/profil';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Settings from './pages/settings';
 import Login from './pages/login';
@@ -20,35 +20,70 @@ import store from './redux/store';
 import Index from './pages/kategorirestorant';
 import KategoriRestorant from './pages/kategorirestorant';
 import ProfilUpdate from './pages/profilupdate';
+import AnasayfaRestorant from './restorantpages/anasayfa';
+import ModalComponent from './components/modal';
+import Itemcard from './components/itemcard';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 function Home() {
+  const {genelResponse} = useSelector(state=>state)
+  const stat=genelResponse.stat
   return (
-    <Tab.Navigator>
+    <>
+    {
+      stat =="müşteri" ? (
+        <Tab.Navigator>
       <Tab.Screen name="Anasayfa" component={Anasayfa} options={{headerShown:false}} />
       <Tab.Screen name="Profil" component={Profil} options={{headerShown:false}} />
       <Tab.Screen name="Settings" component={Settings} options={{headerShown:false}} />
       <Tab.Screen name="Sepet" component={Sepet} options={{headerShown:false}} />
     </Tab.Navigator>
+      ):(
+        <Tab.Navigator>
+          <Tab.Screen name='AnasayfaRestorant' component={AnasayfaRestorant} options={{headerShown:false}}></Tab.Screen>
+        </Tab.Navigator>
+      )
+    }
+    </>
+    
   );
 }
 
 function Root() {
+  const {genelResponse} = useSelector(state=>state)
+  const stat=genelResponse.stat
+
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Yemek" component={Home} />
-      <Drawer.Screen name="Settings" component={Settings} />
-      <Drawer.Screen name="ProfilUpdate" component={ProfilUpdate} />
-    </Drawer.Navigator>
+    <>
+      {
+        stat == "müşteri" ? (
+          <Drawer.Navigator>
+          <Drawer.Screen name="Yemek" component={Home} />
+          <Drawer.Screen name="Settings" component={Settings} />
+          <Drawer.Screen name="ProfilUpdate" component={ProfilUpdate} />
+      </Drawer.Navigator>
+        ):(
+          <Drawer.Navigator>
+          <Drawer.Screen name="Yemek" component={Home} />
+          <Drawer.Screen name="Settings" component={Settings} />
+          <Drawer.Screen name="ProfilUpdate" component={ProfilUpdate} />
+          </Drawer.Navigator>
+        )
+      }
+      </>
+      
+    
   );
 }
 
 export default function App() {
   return (
     <Provider store={store} >
+<GestureHandlerRootView>
 
     <PaperProvider>
     <NavigationContainer>
@@ -70,9 +105,11 @@ export default function App() {
         <Stack.Screen name='Sepet' component={Sepet}/>
         <Stack.Screen name='KategoriRestorant' component={KategoriRestorant}/>
         <Stack.Screen name='ProfilUpdate' component={ProfilUpdate}/>
+        <Stack.Screen name='AnasayfaRestorant' component={AnasayfaRestorant}/>
       </Stack.Navigator>
     </NavigationContainer>
           </PaperProvider>
+          </GestureHandlerRootView>
           </Provider>
   );
 }

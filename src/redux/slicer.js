@@ -1,5 +1,5 @@
 const INITIAL_STATE={
-    email:"",urun:[]
+    email:"",urun:[],stat:"",modal:false
 }
 const genelResponseReducer= (state=INITIAL_STATE,action)=>{
     switch (action.type) {
@@ -7,6 +7,10 @@ const genelResponseReducer= (state=INITIAL_STATE,action)=>{
                 return {...state,email:action.payload}
         case "SET_URUN":
                 return {...state,urun:action.payload}
+        case "SET_STATUS":
+                return {...state,stat:action.payload}
+        case "SET_MODAL":
+                return {...state,modal:action.payload}
         default:
            return state
     }
