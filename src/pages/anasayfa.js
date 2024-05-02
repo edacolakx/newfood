@@ -54,6 +54,7 @@ const renderItemRes = ({ item }) => (
 
         <FlatList horizontal={true} data={tekOlanlar} renderItem={renderItemRes} ></FlatList>
       </View>
+      <Button onPress={()=>{navigation.navigate("Deneme")}}> Denemeye git</Button>
       <FlatList data={veri} renderItem={renderItem}></FlatList>
     </View>
   )

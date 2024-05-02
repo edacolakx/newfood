@@ -1,9 +1,10 @@
-import { View, Text , StyleSheet,TextInput,FlatList} from 'react-native'
+import { View, Text , StyleSheet,TextInput,FlatList, TouchableOpacity} from 'react-native'
 import React, { useState } from 'react'
 import { Avatar, Badge, Button, Card, FAB, Modal, PaperProvider, Portal,  } from 'react-native-paper'
 import ModalComponent from './modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { setModal } from '../redux/actions';
+import { Icon } from '@rneui/themed';
 
 export default function Itemcard(props) {
    
@@ -31,15 +32,20 @@ const veri=[
   return (
     <View>
         <View style={styles.card}>
-             <Avatar.Image size={70} style={{marginTop:10}} source={{uri:props.resim}} />
-
-                <Button onPress={showModal}>Sepete Ekle</Button>
+             <Avatar.Image size={70} style={{marginTop:10,marginRight:20}} source={{uri:props.resim}} />
+               
               <View style={{flex:1}}>
                   <Text style={{color:"black",fontWeight:"bold",fontSize:20,marginLeft:10}}>{props.isim}</Text>
                   <Text style={{color:"black",marginLeft:10,marginBottom:10,fontStyle:"italic"}}>{props.description}</Text>
                   <Text style={{color:"black",marginLeft:10,fontSize:15}}>{props.fiyat}</Text>
               </View>
               
+              <Badge style={{ position: "absolute", top: 1, left: 1, backgroundColor: "#E72929" }} size={40}>
+               <TouchableOpacity onPress={showModal}>
+                <Icon name='exposure-plus-1' size={20} color={"white"} style={{color:"white"}}></Icon>
+               </TouchableOpacity>
+              </Badge>
+ 
         </View>
       <Portal>
         <Modal visible={visible} onDismiss={hideModal} dismissableBackButton={true} style={styles.modal}>

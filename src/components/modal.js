@@ -2,7 +2,7 @@ import { View, Text ,StyleSheet,TextInput, Image, TouchableOpacity} from 'react-
 import React, { useState } from 'react'
 import { Avatar,  FAB,Button} from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux';
-import {setModal, setUrun} from '../redux/actions'
+import {setMiktarRedux, setModal, setUrun} from '../redux/actions'
 
 export default function ModalComponent(props) {
     const [text, setText] = useState('');
@@ -26,7 +26,7 @@ export default function ModalComponent(props) {
       const urun = sepet.find(item => item.id === urunId);
       return urun ? true : false;
     }
-
+console.log(miktar)
     const urunSepetteVarMi = sepetteUrunVarMi(genelResponse.urun, props.id);
     function sepeteekle() {
       if (urunSepetteVarMi) {
@@ -38,6 +38,7 @@ export default function ModalComponent(props) {
         dispatch(setUrun(updatedUrunler)); // Yeni diziyi Redux durumuna ata
         console.log(updatedUrunler);
         dispatch(setModal(false))
+        dispatch(setMiktarRedux(miktar))
       } 
     }
     

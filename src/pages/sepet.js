@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet ,Text, TouchableOpacity} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Itemcard from '../components/itemcard';
 import { Avatar, Button } from 'react-native-paper';
 import { Icon } from '@rneui/themed';
+import { setMiktarRedux } from '../redux/actions';
 
 const Sepet = () => {
     const {genelResponse}=useSelector(state=>state)
+    const dispatch= useDispatch()
+    const [miktara,setMiktara]=useState()
+
     const renderItem = ({ item }) => (
       <View>
         <View style={styles.card}> 
@@ -24,11 +28,11 @@ const Sepet = () => {
               </View>
             </View>
             <View style={{alignItems:"center",height:50,alignSelf:"center",flexDirection:"row"}}>
-            <TouchableOpacity onPress={()=>{console.log("object")}} style={{marginTop:5}}>
+            <TouchableOpacity onPress={()=>{dispatch(setMiktarRedux(genelResponse.miktar-1))}} style={{marginTop:5}}>
             <Text style={styles.text}>-</Text>
           </TouchableOpacity>
-              <Text style={{color:"black",fontSize:25,marginRight:20,marginTop:5}}>{item.miktar}</Text>
-          <TouchableOpacity onPress={()=>{console.log("object")}} style={{marginTop:5}}>
+              <Text style={{color:"black",fontSize:25,marginRight:20,marginTop:5}}>{genelResponse.miktar}</Text>
+          <TouchableOpacity onPress={()=>{dispatch(setMiktarRedux(genelResponse.miktar+1))}} style={{marginTop:5}}>
             <Text style={styles.text}>+</Text>
           </TouchableOpacity>
             </View>
@@ -37,7 +41,7 @@ const Sepet = () => {
   );
 
 const totalPrice = genelResponse.urun.reduce((accumulator, current) => {
-  return accumulator + current.fiyat;
+  return accumulator + current.fiyat*genelResponse.miktar;
 }, 0)
 
 console.log("totalprice",totalPrice)
@@ -47,9 +51,6 @@ console.log("totalprice",totalPrice)
       <View style={styles.content}>
         <FlatList data={genelResponse.urun} style={{width:"100%"}} renderItem={renderItem}></FlatList>
       </View>
-
-
-      
       <View style={styles.bottom}>
         <Text>Fiyat</Text>
         <Text>{totalPrice}</Text>

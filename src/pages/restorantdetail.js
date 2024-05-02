@@ -136,7 +136,7 @@ export default function Restorantdetail({route,navigation}) {
     />
       </View>
       <View style={styles.bottom}>
-        <Button onPress={()=>{navigation.navigate("Sepet")}}>Sepete Git</Button>
+        <Button onPress={()=>{navigation.navigate("Sepet")}} labelStyle={{color:"white"}}>Sepete Git</Button>
       </View>
     </View>
   )
@@ -152,4 +152,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: 'red',
   },
+  button:{
+    
+  }
 });

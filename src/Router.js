@@ -24,6 +24,7 @@ import AnasayfaRestorant from './restorantpages/anasayfa';
 import ModalComponent from './components/modal';
 import Itemcard from './components/itemcard';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Deneme from './pages/deneme';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -106,6 +107,7 @@ export default function App() {
         <Stack.Screen name='KategoriRestorant' component={KategoriRestorant}/>
         <Stack.Screen name='ProfilUpdate' component={ProfilUpdate}/>
         <Stack.Screen name='AnasayfaRestorant' component={AnasayfaRestorant}/>
+        <Stack.Screen name='Deneme' component={Deneme}/>
       </Stack.Navigator>
     </NavigationContainer>
           </PaperProvider>

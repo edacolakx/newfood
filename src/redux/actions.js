@@ -22,3 +22,9 @@ export const setModal=(modal)=>{
         payload:modal
     }
 }    
+export const setMiktarRedux=(miktar)=>{
+    return{
+        type:"SET_MIKTAR",
+        payload:miktar
+    }
+}    
