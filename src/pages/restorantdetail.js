@@ -45,6 +45,22 @@ const urun = [
       kategori:"tatli",
       resim:"https://cdn.shopify.com/s/files/1/1259/6441/files/trilece-tatlisi-tarifi.jpg?v=1598011389"
     },
+    {
+      id: 60,
+      title: 'Patates Kızartması',
+      description:"Baharatlı",
+      fiyat:35,
+      kategori:"yemek",
+      resim:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmN1SCC5quKUl26ifm_cbwpDi-dYACLZYVEjjonN4Okw&s"
+    },
+    {
+      id: 70,
+      title: 'Makarna',
+      description:"Tavuklu makarna",
+      fiyat:70,
+      kategori:"yemek",
+      resim:"https://image.hurimg.com/i/hurriyet/75/750x422/5e1c0d5518c77313c849901f.jpg"
+    },
   ]
   const sortedData = [...urun].sort((a, b) => a.fiyat - b.fiyat);
   const kategorilereGoreUrunler = sortedData.reduce((acc, curr) => {

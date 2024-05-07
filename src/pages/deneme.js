@@ -1,113 +1,80 @@
-import { View, Text,StyleSheet ,Image, Touchable, TouchableOpacity} from 'react-native'
-import React, { useDebugValue, useEffect, useState } from 'react'
-import { Button, TextInput } from 'react-native-paper'
-import { useDispatch } from 'react-redux'
-import { setName, setStatus } from '../redux/actions'
-import axios from 'axios'
-export default function Deneme({navigation}) {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+import React, { useState } from 'react';
+import { View, Button, TextInput, StyleSheet } from 'react-native';
+import { useMutation, useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { FlatList } from 'react-native-gesture-handler';
 
-    function onEmail(tex){setEmail(tex)}
-    function onPassword(tex){setPassword(tex)}
-    const dispatch=useDispatch()
-    function sifremiunutum() {
-        navigation.navigate("Forgotpassword")
+const ADD_CUSTOMER = gql`
+  query{
+    musteriler{
+      id
+      ad
+      soyad
+      email
+      adres
+      telefon
     }
-    async function handleLogin   ()  {
-        try {
-          console.log("noldu")
-          const response = await axios.post('http://127.0.0.1:8000/graphql',{username,password})
-          const data=response.data
-          
-          navigation.navigate('Anasayfa')
-        } catch (error) {
-          {
-            Alert.alert(
-              "Eksik yada hatalı bilgi girdiniz",
-                "",
-                [
-                  {
-                    text: "İptal",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                  }
-                ]
-            )
-          }
-        }
-      };
-    useEffect(()=>{
-       async function getData() {
-            const response = await axios.post('http://127.0.0.1:8000/graphql/',{})
-        }
-    },[])
-
-    const kullanicilar=[
-      {
-        isim:"Eda Çolak",
-        email:"edaacolakk1907@gmail.com",
-        şifre : 1234,
-        telefon: 5064062114,
-        dg:"05-04-2002",
-        status:"müşteri"
-      },
-      {
-        isim:"Mehmet Kuru",
-        email:"mehmetkuru0777@gmail.com",
-        şifre : 1234,
-        telefon: 5347771441,
-        dg:"23-10-2000",
-        status:"restorant"
-      },
-    ]
-
-    function userlogin() {
-      dispatch(setName(email))
-      dispatch(setStatus("müşteri"))
-      navigation.navigate("Root")
-    }
-
-    function userregister() {
-        navigation.navigate("Register")
-    }
-  return (
-    <View style={{alignItems:"center",backgroundColor:"#EEEDED",flex:1}}>
-      <Image
-               style={{ width: 90, height: 90 ,marginBottom:30,marginTop:100}}
-               source={{
-                   uri: 'https://reactnative.dev/img/tiny_logo.png',
-                }}/>
-
-        <TextInput onChangeText={onEmail} label={"Email "} style={styles.input}></TextInput>
-        <TextInput onChangeText={onPassword} label={"Şifre "} style={styles.input}></TextInput>
-        <TouchableOpacity onPress={sifremiunutum} style={{flexDirection:"row-reverse",marginRight:170,marginBottom:30}}>
-          <Text style={{color:"black"}}>Şifrenizi mi unuttunuz?</Text>
-        </TouchableOpacity>
-        <Button onPress={handleLogin} mode={"elevated"} style={styles.button} labelStyle={{color:"white"}}>Giriş Yap</Button>
-        
-        <View style={{flexDirection:"row"}}>
-        <Text style={{color:"black"}}>Bir hesabınız yoksa </Text>
-        <TouchableOpacity>
-          <Text onPress={userregister} style={{color:"red"}}>kaydolun</Text>
-        </TouchableOpacity>
-        </View>
-
-    </View>
-  )
-}
-
-const styles=StyleSheet.create({
-  input:{
-    marginBottom:10,
-    width:"80%",
-    alignSelf:"center",
-    backgroundColor:"white" 
-  },
-  button:{
-    marginBottom:10,
-    width:"80%",
-    backgroundColor:"#E21818",
-    
   }
-})
+`;
+
+const Deneme = () => {
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
+  const [adres, setAdres] = useState('');
+  const [telefon, setTelefon] = useState('');
+
+  const [loading,error,data] = useQuery(ADD_CUSTOMER);
+
+  const handleAddCustomer = () => {
+    addCustomer({
+      variables: {
+        name,
+        surname,
+        email,
+        adres,
+        telefon
+      }
+    })
+    .then(result => {
+      console.log('Customer added successfully:', result.data.musteriEkle.musteri);
+    })
+    .catch(error => {
+      console.error('Error adding customer:', error);
+    });
+  };
+
+  return (
+    <View style={styles.container}>
+      <FlatList data={data} renderItem={({item})=>(
+        <View>
+          <Text>{item.ad} {item.soyad}</Text>
+          <Text>{item.email}</Text>
+          <Text>{item.adres}</Text>
+          <Text>{item.telefon}</Text>
+        </View>
+      
+      )}></FlatList>
+      <Button title="Add Customer" onPress={handleAddCustomer} />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20
+  },
+  input: {
+    height: 40,
+    width: '100%',
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10
+  }
+});
+
+export default Deneme;

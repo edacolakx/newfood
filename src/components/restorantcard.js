@@ -42,7 +42,7 @@ const style=StyleSheet.create({
     card:{
         flexDirection:"row",
         marginBottom:10,
-        backgroundColor:"#F3EDC8",
+        backgroundColor:"#ffb9b9",
         height:100
     }
 })

@@ -1,6 +1,6 @@
-import { View, Text ,FlatList, TouchableOpacity} from 'react-native'
-import React from 'react'
-import { Avatar, Button } from 'react-native-paper'
+import { View, Text ,FlatList, TouchableOpacity, StyleSheet} from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Avatar, Button, Switch } from 'react-native-paper'
 import Restorantcard from '../components/restorantcard';
 
 
@@ -27,12 +27,20 @@ export default function Anasayfa({navigation}) {
       reskategori:"tavukburger"
     },
   ]
-
+  const [dataa,setData] = useState()
+const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  useEffect(() => {
+    const sortedData = [...veri].sort((a, b) => 
+      isEnabled ? a.min - b.min : b.min - a.min
+    );
+    setData(sortedData);
+  }, [isEnabled]);
+  console.log(dataa)
  const array=[]
  veri.forEach(function Ekle(item) {
   array.push(item.reskategori)
  })
- console.log(array)
  const tekOlanlar = array.filter((item, index) => {
   return array.indexOf(item) === index;
 })
@@ -44,18 +52,45 @@ const renderItemRes = ({ item }) => (
   <TouchableOpacity onPress={()=>{navigation.navigate("KategoriRestorant",{kategori:item})}}>
       <View>
         <Avatar.Image source={{uri:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Popeyes_logo.svg/1200px-Popeyes_logo.svg.png"}}/>
-        <Text style={{color:"black"}}>{item}</Text>
+        <Text style={{color:"black", textAlign:"center"}}>{item}</Text>
       </View>
   </TouchableOpacity>
 );
+
   return (
     <View>
+        <Text style={styles.text}>Kategoriler</Text>
       <View style={{height:100}}>
-
         <FlatList horizontal={true} data={tekOlanlar} renderItem={renderItemRes} ></FlatList>
       </View>
-      <Button onPress={()=>{navigation.navigate("Deneme")}}> Denemeye git</Button>
-      <FlatList data={veri} renderItem={renderItem}></FlatList>
+      <Text style={styles.text}>Restorantlar</Text>
+
+      <View style={{flexDirection:"row-reverse"}}>
+      <Text style={{color:isEnabled==true ? "#ffb9b9":"black",fontWeight:"bold"}}>Artan</Text>
+      <Switch
+        trackColor={{false: 'red', true: '#ffb9b9'}}
+        thumbColor={isEnabled ? '#ffb9b9' : 'red'}
+        onValueChange={toggleSwitch}
+        value={isEnabled}
+        />
+        <Text style={{color:isEnabled==true ? "black":"red",fontWeight:"bold"}}>Azalan</Text>
+        </View>
+      <FlatList data={dataa} renderItem={renderItem}></FlatList>
     </View>
   )
 }
+
+
+const styles = StyleSheet.create({
+  text:{
+    fontSize:20,
+    fontWeight:"bold",
+    color:"black",
+    marginBottom:3
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})

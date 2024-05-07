@@ -37,12 +37,12 @@ const veri=[
               <View style={{flex:1}}>
                   <Text style={{color:"black",fontWeight:"bold",fontSize:20,marginLeft:10}}>{props.isim}</Text>
                   <Text style={{color:"black",marginLeft:10,marginBottom:10,fontStyle:"italic"}}>{props.description}</Text>
-                  <Text style={{color:"black",marginLeft:10,fontSize:15}}>{props.fiyat}</Text>
+                  <Text style={{color:"black",marginLeft:10,fontSize:15}}>{props.fiyat} TL</Text>
               </View>
               
               <Badge style={{ position: "absolute", top: 1, left: 1, backgroundColor: "#E72929" }} size={40}>
                <TouchableOpacity onPress={showModal}>
-                <Icon name='exposure-plus-1' size={20} color={"white"} style={{color:"white"}}></Icon>
+                <Icon onPress={showModal} name='check' size={20} color={"white"}></Icon>
                </TouchableOpacity>
               </Badge>
  
@@ -72,7 +72,7 @@ const styles=StyleSheet.create({
       modal:{
         flex:1,
         backgroundColor:"white",
-        height:430,
+        height:450,
         marginTop:150,
         width:330,
         marginLeft:30,

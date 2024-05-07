@@ -25,6 +25,9 @@ import ModalComponent from './components/modal';
 import Itemcard from './components/itemcard';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Deneme from './pages/deneme';
+import { ApolloProvider } from '@apollo/client';
+import client from './client';
+import Odeme from './pages/odeme';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -85,6 +88,7 @@ export default function App() {
   return (
     <Provider store={store} >
 <GestureHandlerRootView>
+<ApolloProvider client={client}>
 
     <PaperProvider>
     <NavigationContainer>
@@ -108,9 +112,11 @@ export default function App() {
         <Stack.Screen name='ProfilUpdate' component={ProfilUpdate}/>
         <Stack.Screen name='AnasayfaRestorant' component={AnasayfaRestorant}/>
         <Stack.Screen name='Deneme' component={Deneme}/>
+        <Stack.Screen name='Odeme' component={Odeme}/>
       </Stack.Navigator>
     </NavigationContainer>
           </PaperProvider>
+          </ApolloProvider>
           </GestureHandlerRootView>
           </Provider>
   );

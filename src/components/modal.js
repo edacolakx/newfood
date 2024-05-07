@@ -26,8 +26,9 @@ export default function ModalComponent(props) {
       const urun = sepet.find(item => item.id === urunId);
       return urun ? true : false;
     }
-console.log(miktar)
+    console.log(miktar)
     const urunSepetteVarMi = sepetteUrunVarMi(genelResponse.urun, props.id);
+    
     function sepeteekle() {
       if (urunSepetteVarMi) {
         console.log("Ürün sepette zaten var.");
@@ -45,7 +46,7 @@ console.log(miktar)
   return (
     <View style={{height:"100%"}}>
         <Image
-        style={{alignSelf:"center",height:150,width:150}}
+        style={{alignSelf:"center",height:150,width:150,marginTop:5}}
         source={{
             uri: props.resim,
           }}
@@ -53,7 +54,7 @@ console.log(miktar)
     
     <Text style={{color:"black",fontWeight:"bold",fontSize:25,alignSelf:"center"}}>{props.isim}</Text>
     <Text style={{color:"black",fontSize:20,marginLeft:10}}>{props.description}</Text>
-    <Text style={{color:"black",fontSize:20,marginLeft:10,marginBottom:50,textAlign:"right"}}>{props.fiyat}</Text>
+    <Text style={{color:"black",fontSize:20,marginRight:10,marginBottom:50,textAlign:"right"}}>{props.fiyat} TL</Text>
       <TextInput style={styles.input} 
         placeholderTextColor={"black"} onChangeText={setText}
         numberOfLines={4} multiline={true} placeholder='Notunuzu Yazınız'></TextInput>
