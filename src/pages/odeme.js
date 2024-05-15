@@ -10,7 +10,7 @@ import {  } from 'react-native-gesture-handler';
 import { Icon } from '@rneui/themed';
 
 
-export default function MapScreen() {
+export default function MapScreen({navigation}) {
 
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState("");
@@ -31,6 +31,8 @@ export default function MapScreen() {
   function onNo(tex){setNo(tex)}
   function onPostaKodu(tex){setPostaKodu(tex)}
   function onAdresTarifi(tex){setAdresTarifi(tex)}
+
+
   const handlePress = async (event) => {
     const { coordinate } = event.nativeEvent;
     setSelectedLocation(coordinate);
@@ -143,6 +145,11 @@ const hideModal = () => setModal(false);
                  <TextInput mode='outlined' style={styles.inputtel} onChangeText={onAdresTarifi} textColor='black' label='Telefon Numarası'></TextInput>
                  
                  </Card>
+                  <Button title="Ödeme Yap" onPress={()=>
+                 { Alert.alert("Siparişiniz Alındı")
+                    navigation.navigate("Siparisler")
+                }
+                  }></Button>
           </View>
       
     </View>

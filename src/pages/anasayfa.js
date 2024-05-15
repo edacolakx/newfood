@@ -2,6 +2,8 @@ import { View, Text ,FlatList, TouchableOpacity, StyleSheet} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, Switch } from 'react-native-paper'
 import Restorantcard from '../components/restorantcard';
+import { GET_CATEGORIES } from '../components/sorgular';
+import { useQuery } from '@apollo/client';
 
 
 export default function Anasayfa({navigation}) {
@@ -57,6 +59,25 @@ const renderItemRes = ({ item }) => (
   </TouchableOpacity>
 );
 
+const { loading, error, data } = useQuery(GET_CATEGORIES);
+console.log(data)
+
+
+
+// JSON verisinden kategorileri al
+//const kategorilerJSON = data.kategoriler;
+
+// Kategorileri diziye dönüştür
+/*const kategorilerDizisi = kategorilerJSON.map(kategori => {
+  return {
+    id: kategori.id,
+    name: kategori.name
+  };
+});*/
+
+// Kategorileri dizi olarak yazdır
+//console.log(kategorilerDizisi);
+
   return (
     <View>
         <Text style={styles.text}>Kategoriler</Text>
@@ -64,7 +85,7 @@ const renderItemRes = ({ item }) => (
         <FlatList horizontal={true} data={tekOlanlar} renderItem={renderItemRes} ></FlatList>
       </View>
       <Text style={styles.text}>Restorantlar</Text>
-
+      <Button onPress={()=>{navigation.navigate("Deneme")}}>bas</Button>
       <View style={{flexDirection:"row-reverse"}}>
       <Text style={{color:isEnabled==true ? "#ffb9b9":"black",fontWeight:"bold"}}>Artan</Text>
       <Switch

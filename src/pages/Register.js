@@ -1,7 +1,10 @@
-import { View, Text } from 'react-native'
+import { View, Text,StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { Button, TextInput } from 'react-native-paper'
 import { SelectList } from 'react-native-dropdown-select-list'
+import { useMutation } from '@apollo/client'
+import { KAYDOL } from '../components/sorgular'
+import { Icon } from '@rneui/themed'
 
 export default function Register({navigation}) {
     const [email, setEmail] = useState("")
@@ -9,7 +12,7 @@ export default function Register({navigation}) {
     const [name, setName] = useState("")
     const [surname, setSurname] = useState("")
     const [selected, setSelected] = React.useState("");
-
+    const [repassword,setRepassword]=useState("")
 
     function onEmail(tex){setEmail(tex)}
     function onPassword(tex){setPassword(tex)}
@@ -20,21 +23,38 @@ export default function Register({navigation}) {
     
   
   const data = [
-      {key:'1', value:'Restorant' },
-      {key:'2', value:'Bireysel'}
+      {key:'1', value:'Restoran' },
+      {key:'2', value:'Kullanici'}
   ]
 
-    function kaydol() {
+    function ksaydol() {
         navigation.navigate("Login")
     }
-    
+
+
+    const [kaydol]=useMutation(KAYDOL)
+    async function kaydolbuton(){
+        try {
+          const {data} = await kaydol({variables:{
+            email:email,
+            hesapTipi:selected,
+            isim:name,
+            sifre:password,
+            sifreDogrulama:repassword,
+            soyisim:surname
+          }})
+          console.log('Kaydol başarılı', data.kaydol);
+        } catch (error) {
+          
+        }
+    }
   return (
-    <View style={{backgroundColor:"black",flex:1}}>
-      <TextInput onChangeText={onEmail} label={"Email"}></TextInput>
-      <TextInput onChangeText={onPassword} label={"Şifre"}></TextInput>
-      <TextInput onChangeText={onRepassword} label={"Tekrar Şifre"}></TextInput>
-      <TextInput onChangeText={onName} label={"İsim"}></TextInput>
-      <TextInput onChangeText={onSurname} label={"Soyisim"}></TextInput>
+    <View style={{backgroundColor:"white",flex:1}}>
+      <TextInput style={styles.input} mode='outlined' onChangeText={onEmail} label={"Email"}></TextInput>
+      <TextInput style={styles.input} mode='outlined' onChangeText={onPassword} label={"Şifre"}></TextInput>
+      <TextInput style={styles.input} mode='outlined' onChangeText={onRepassword} label={"Tekrar Şifre"}></TextInput>
+      <TextInput style={styles.input} mode='outlined' onChangeText={onName} label={"İsim"}></TextInput>
+      <TextInput style={styles.input} mode='outlined' onChangeText={onSurname} label={"Soyisim"}></TextInput>
 
       <SelectList 
         setSelected={(val) => setSelected(val)} 
@@ -43,9 +63,24 @@ export default function Register({navigation}) {
         placeholder='Hesap türü seçin'
         search={false}
         dropdownShown={false}
+        boxStyles={styles.dropdown}
     />
-      <Button onPress={kaydol}>Kaydol</Button>
+      <Button onPress={kaydolbuton}>Kaydol</Button>
     <Text >{selected}</Text>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  input:{
+    width:"90%",
+    marginBottom:10,
+    alignSelf:"center",
+    backgroundColor:"#FFB9B9"
+  },
+  dropdown:{
+    width:"90%",
+    alignSelf:"center",
+    backgroundColor:"#FFB9B9"
+  }
+})

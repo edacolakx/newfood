@@ -3,6 +3,8 @@ import React, { useDebugValue, useState } from 'react'
 import { Button, TextInput } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 import { setName, setStatus } from '../redux/actions'
+import { useQuery } from '@apollo/client'
+import { GET_NAME } from '../components/sorgular'
 export default function Login({navigation}) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -14,31 +16,14 @@ export default function Login({navigation}) {
         navigation.navigate("Forgotpassword")
     }
 
-    const kullanicilar=[
-      {
-        isim:"Eda Çolak",
-        email:"edaacolakk1907@gmail.com",
-        şifre : 1234,
-        telefon: 5064062114,
-        dg:"05-04-2002",
-        status:"müşteri"
-      },
-      {
-        isim:"Mehmet Kuru",
-        email:"mehmetkuru0777@gmail.com",
-        şifre : 1234,
-        telefon: 5347771441,
-        dg:"23-10-2000",
-        status:"restorant"
-      },
-    ]
-
     function userlogin() {
-      dispatch(setName(email))
       dispatch(setStatus("müşteri"))
       navigation.navigate("Root")
     }
-
+    const { loading, error, data } = useQuery(GET_NAME, {
+      variables: { email },
+    })
+    console.log("kullancı",data)
     function userregister() {
         navigation.navigate("Register")
     }

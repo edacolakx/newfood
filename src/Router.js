@@ -28,6 +28,10 @@ import Deneme from './pages/deneme';
 import { ApolloProvider } from '@apollo/client';
 import client from './client';
 import Odeme from './pages/odeme';
+import Siparisler from './pages/siparisler';
+import Siparisdetay from './restorantpages/siparisdetay';
+import AddressToLatLng from './restorantpages/rsdeneme';
+import Rsprofil from './restorantpages/rsprofil';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -49,6 +53,7 @@ function Home() {
       ):(
         <Tab.Navigator>
           <Tab.Screen name='AnasayfaRestorant' component={AnasayfaRestorant} options={{headerShown:false}}></Tab.Screen>
+          <Tab.Screen name='Rsprofil' component={Rsprofil} options={{headerShown:false}}></Tab.Screen>
         </Tab.Navigator>
       )
     }
@@ -113,6 +118,9 @@ export default function App() {
         <Stack.Screen name='AnasayfaRestorant' component={AnasayfaRestorant}/>
         <Stack.Screen name='Deneme' component={Deneme}/>
         <Stack.Screen name='Odeme' component={Odeme}/>
+        <Stack.Screen name='Siparisler' component={Siparisler}/>
+        <Stack.Screen name='Siparisdetay' component={Siparisdetay}/>
+        <Stack.Screen name='AddressToLatLng' component={AddressToLatLng}/>
       </Stack.Navigator>
     </NavigationContainer>
           </PaperProvider>
