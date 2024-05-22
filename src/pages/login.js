@@ -1,41 +1,68 @@
 import { View, Text,StyleSheet ,Image, Touchable, TouchableOpacity} from 'react-native'
 import React, { useDebugValue, useState } from 'react'
 import { Button, TextInput } from 'react-native-paper'
-import { useDispatch } from 'react-redux'
-import { setName, setStatus } from '../redux/actions'
-import { useQuery } from '@apollo/client'
-import { GET_NAME } from '../components/sorgular'
-export default function Login({navigation}) {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+import { useDispatch, useSelector } from 'react-redux'
+import { setEmail, setName, setStatus } from '../redux/actions'
+import { useMutation, useQuery } from '@apollo/client'
+import { GET_NAME, GET_RESTAURANT_BY_EMAIL } from '../components/sorgular'
+import { Icon } from '@rneui/themed'
 
-    function onEmail(tex){setEmail(tex)}
+
+export default function Login({navigation}) {
+
+
+  const {genelResponse} = useSelector(state => state)
+  
+    const [email, setEmailone] = useState("")
+    const [password, setPassword] = useState("")
+    const [name,setName] = useState("")
+    const [phone,setPhone] = useState("")
+    const [address,setAddress] = useState("")
+    const [image,setImage] = useState("")
+    const [minTutar,setMinTutar] = useState()
+    const [category,setCategory] = useState("")
+    const [puan,setPuan] = useState()
+    const [acilisSaati,setAcilisSaati] = useState()
+    const [kapanisSaati,setKapanisSaati] = useState()
+    const [id,setId]=useState()
+    const [resturun,setResturun]= useState([])
+
+    function onEmail(tex){setEmailone(tex)}
     function onPassword(tex){setPassword(tex)}
     const dispatch=useDispatch()
+    const[getRes] =useMutation(GET_RESTAURANT_BY_EMAIL)
+
     function sifremiunutum() {
         navigation.navigate("Forgotpassword")
     }
 
+
+
     function userlogin() {
-      dispatch(setStatus("müşteri"))
-      navigation.navigate("Root")
+      dispatch(setStatus("restorant"))
+      console.log(email)
+      dispatch(setEmail(email))
+      try{
+      const {data} =  getRes({variables:{
+          email:email
+        }})
+        console.log("restoranr",data)
+      }
+      catch(error){
+        console.log(error)
+      }
+        navigation.navigate("Root")
     }
-    const { loading, error, data } = useQuery(GET_NAME, {
-      variables: { email },
-    })
-    console.log("kullancı",data)
+
+
     function userregister() {
         navigation.navigate("Register")
     }
   return (
     <View style={{alignItems:"center",backgroundColor:"#EEEDED",flex:1}}>
-      <Image
-               style={{ width: 90, height: 90 ,marginBottom:30,marginTop:100}}
-               source={{
-                   uri: 'https://reactnative.dev/img/tiny_logo.png',
-                }}/>
+     <Icon name='fastfood' size={100} style={{marginBottom:40,marginTop:100}}></Icon>
 
-        <TextInput onChangeText={onEmail} label={"Email "} style={styles.input}></TextInput>
+        <TextInput onChangeText={onEmail} label={"Email "} style={styles.input} textColor='black'></TextInput>
         <TextInput onChangeText={onPassword} label={"Şifre "} style={styles.input}></TextInput>
         <TouchableOpacity onPress={sifremiunutum} style={{flexDirection:"row-reverse",marginRight:170,marginBottom:30}}>
           <Text style={{color:"black"}}>Şifrenizi mi unuttunuz?</Text>

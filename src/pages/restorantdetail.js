@@ -114,7 +114,7 @@ export default function Restorantdetail({route,navigation}) {
       ]);
       const [index, setIndex] = React.useState(0);
       const layout = useWindowDimensions();
-      const {resim,min,isim}=route.params
+      const {resim,min,isim,adres}=route.params
   return (
     <View style={{flex:1}}>
       <View style={styles.content}>
@@ -126,12 +126,10 @@ export default function Restorantdetail({route,navigation}) {
                              }} />
                     </View>
                     <View style={{marginLeft:20}}>
-                        <Text style={{color:"white",fontSize:40}}>{isim}</Text>
-                        <Text>Minimum Sepet Tutarı {min}</Text>
+                        <Text style={{color:"white",fontSize:35,marginBottom:20}}>{isim}</Text>
+                        <Text style={{color:"white"}}>Minimum Sepet Tutarı {min}</Text>
+                        <Text style={{color:"white"}}>{adres}</Text>
                     </View>
-                </View>
-                <View>
-                    <Text>adres</Text>
                 </View>
             </View>
       </View>

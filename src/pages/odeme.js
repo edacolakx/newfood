@@ -23,14 +23,30 @@ export default function MapScreen({navigation}) {
    const [postaKodu,setPostaKodu] = useState("")
    const [adresTarifi,setAdresTarifi] = useState("")
 
-  function onUlke(tex){setUlke(tex)}
-  function onSehir(tex){setSehir(tex)}
-  function onIlce(tex){setIlce(tex)}
-  function onMahalle(tex){setMahalle(tex)}
-  function onSokak(tex){setSokak(tex)}
-  function onNo(tex){setNo(tex)}
-  function onPostaKodu(tex){setPostaKodu(tex)}
-  function onAdresTarifi(tex){setAdresTarifi(tex)}
+  function onUlke(tex){setUlke(tex)
+    updateDeliveryAddress()
+  }
+  function onSehir(tex){setSehir(tex)
+    updateDeliveryAddress()
+  }
+  function onIlce(tex){setIlce(tex)
+    updateDeliveryAddress()
+  }
+  function onMahalle(tex){setMahalle(tex)
+    updateDeliveryAddress()
+  }
+  function onSokak(tex){setSokak(tex)
+    updateDeliveryAddress()
+  }
+  function onNo(tex){setNo(tex)
+    updateDeliveryAddress()
+  }
+  function onPostaKodu(tex){setPostaKodu(tex)
+    updateDeliveryAddress()
+  }
+  function onAdresTarifi(tex){setAdresTarifi(tex)
+    updateDeliveryAddress()
+  }
 
 
   const handlePress = async (event) => {
@@ -51,33 +67,43 @@ export default function MapScreen({navigation}) {
         }
       ]);
       const parts = address.split(',');
-      const neighborhood = parts[1];
-      const street = parts[0];
+      const mahalle = parts[0];
+      const sokakno = parts[1];
       const city = parts[2];
       const country = parts[3];
-      const no =neighborhood.split('.')[2]
-      const b= city.split(' ')
-      const posta = b[1]
-      const ilce= b[2].split('/')
-      const ilcee=ilce[0]
-      //const adres=street+","+no[0].split('.')[0]+","+no[2]+","+ilcee+","+ilce[1]+","+country+","+posta
-      
-      setNo(no)
-      setMahalle(street)
-      setSokak(no[0].split('.')[0])
-      setSehir(ilce[1])
-      setUlke(country)
-      setPostaKodu(posta)
-      setIlce(ilcee)
+      const sokak = sokakno.split('.')[0]+sokakno.split('.')[1]
+      const no =sokakno.split('.')[2]
+      const postaKodu=city.split(' ')[1]
+      const ilce=city.split("/")[1]
+      const sehir= city.split('/')[2]
       console.log(address)
-      const adres=sokak+" "+no+" "+mahalle+" "+ilce+" "+sehir+" "+ulke+" "+postaKodu
+
+      console.log("sokak",sokak)
+      console.log("mahalle",mahalle)
+      console.log("country",country)
+      console.log("no",no)
+      console.log("postakodu",postaKodu)
+      console.log("ilce",ilce)
+      console.log("sehir",sehir)
+      const adres = mahalle+","+sokak+','+no+','+postaKodu+','+ilce+','+sehir+','+ulke
       setSelectedAddress(adres);
-      console.log(adres)
+      setSokak(sokak)
+      setMahalle(mahalle)
+      setPostaKodu(postaKodu)
+      setSehir(sehir)
+      setNo(no)
+      setUlke(country)
+      setIlce(ilce)
 
     } catch (error) {
       console.error('Adres dönüştürme hatası:', error);
     }
   };
+
+  const updateDeliveryAddress = () => {
+    const newAddress = `${mahalle} Mahallesi, ${sokak} Sokak No:${no}, ${ilce}, ${sehir}/${ulke} ${postaKodu}`;
+    setSelectedAddress(newAddress);
+  }
 
   
 const [modal,setModal] = useState(false)

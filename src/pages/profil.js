@@ -1,49 +1,84 @@
-import { View, Text ,StyleSheet} from 'react-native'
-import React from 'react'
-import { Card } from 'react-native-paper'
+import { View, Text , StyleSheet, TouchableOpacity} from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Avatar, Button, Card, IconButton, Modal, Portal, TextInput } from 'react-native-paper'
+import { getUserInfo } from '../components/axiosfunction'
+import axios from 'axios'
+import { useSelector } from 'react-redux'
+import { Icon } from '@rneui/themed'
+import CustomCard from '../components/editingcomponent'
+
+
+
 
 export default function Profil() {
+  const {genelResponse}=useSelector(state=>state)
+  const [name,setName]=useState('')
+  const [surname,setSurname]=useState('')
+  const [email,setEmail]=useState('')
+  const [phone,setPhone]=useState('')
+  const [password,setPassword]=useState('')
+  const [birthday,setBirthday]=useState('')
+
+
+  useEffect(()=>{
+    async function getUserInfo(){
+      try {
+          const response = await axios.get('https://jsonplaceholder.typicode.com/users')
+              const data = response.data;
+              const currentUser = data.filter(item => item.email === genelResponse.email);           
+              setName(currentUser[0].name)
+              setEmail(currentUser[0].email)
+              setPhone(currentUser[0].phone)
+          } catch (error) {
+              console.error("error",error);
+          }
+      };
+    getUserInfo()
+  },[])
+  
   return (
     <View style={styles.view}>
-      <Card style={styles.card}>
-        <Text style={styles.texttop}>İsim Syoisim</Text>
-        <Text style={styles.text}>İsim Soysiim</Text>
-      </Card>
-      <Card style={styles.card}>
-        <Text style={styles.texttop}>Email</Text>
-        <Text style={styles.text}>Email</Text>
-      </Card>
-      <Card style={styles.card}>
-        <Text style={styles.texttop}>DG</Text>
-        <Text style={styles.text}>DG</Text>
-      </Card>
-      <Card style={styles.card}>
-        <Text style={styles.texttop}>Telefon</Text>
-        <Text style={styles.text}>Telefon</Text>
-      </Card>
+      <CustomCard headline={"İsim"} info={name}/>
+      <CustomCard headline={"Email"} info={email}/>
+      <CustomCard headline={"Şifre"} info={password}/>
+      <CustomCard headline={"Telefon"} info={phone}/>
+      <CustomCard headline={"Doğum Günü"} info={birthday}/>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
+const styles=StyleSheet.create({
   card:{
-    height:"20%",
-    width:"90%",
-    marginBottom:20,
-    backgroundColor:"#FFB9B9",
+      backgroundColor:"#DC8686",
+      flex:1,
+      marginBottom:10,
+      flexDirection:"row",
+      justifyContent:"space-between"
   },
   view:{
-    flex:1,
-    justifyContent:"space-evenly",
-    alignItems:"center"
+    justifyContent:"space-around",
+    flex:1
   },
-  texttop:{
-    color: "black",
+  headline:{
     fontWeight:"bold",
-    fontSize:20
+    fontSize:25,
+    marginLeft:10,
+    marginTop:5
   },
-  text:{
-    color:"black",
-    marginLeft:20
+  modal:{
+    backgroundColor:"white",
+  },
+  input:{
+    backgroundColor:"white",
+    width:"90%",
+    alignSelf:"center",
+    marginBottom:20
+  },
+  editview:{
+    justifyContent: 'flex-start', 
+    alignItems: 'flex-end' ,
+    height:"100%"
   }
 })
+
+ 

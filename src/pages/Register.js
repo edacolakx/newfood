@@ -1,10 +1,11 @@
-import { View, Text,StyleSheet } from 'react-native'
+import { View, Text,StyleSheet, useWindowDimensions, FlatList, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { Button, TextInput } from 'react-native-paper'
 import { SelectList } from 'react-native-dropdown-select-list'
 import { useMutation } from '@apollo/client'
 import { KAYDOL } from '../components/sorgular'
 import { Icon } from '@rneui/themed'
+import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 
 export default function Register({navigation}) {
     const [email, setEmail] = useState("")
@@ -48,8 +49,10 @@ export default function Register({navigation}) {
           
         }
     }
+
   return (
     <View style={{backgroundColor:"white",flex:1}}>
+
       <TextInput style={styles.input} mode='outlined' onChangeText={onEmail} label={"Email"}></TextInput>
       <TextInput style={styles.input} mode='outlined' onChangeText={onPassword} label={"Şifre"}></TextInput>
       <TextInput style={styles.input} mode='outlined' onChangeText={onRepassword} label={"Tekrar Şifre"}></TextInput>
@@ -66,7 +69,9 @@ export default function Register({navigation}) {
         boxStyles={styles.dropdown}
     />
       <Button onPress={kaydolbuton}>Kaydol</Button>
-    <Text >{selected}</Text>
+      <TouchableOpacity style={{alignSelf:"flex-end",marginTop:200,marginRight:5}} onPress={()=>{navigation.navigate("Restoranregister")}}>
+        <Text style={{color:"red"}}>Restoranınızı Eklemek için Tıklayın</Text>
+      </TouchableOpacity>
     </View>
   )
 }

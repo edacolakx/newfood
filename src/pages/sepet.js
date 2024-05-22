@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet ,Text, TouchableOpacity} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import Itemcard from '../components/itemcard';
 import { Avatar, Button } from 'react-native-paper';
 import { Icon } from '@rneui/themed';
-import { setMiktarRedux, setUrun } from '../redux/actions';
+import { setMiktarRedux, setSepetMiktar, setUrun } from '../redux/actions';
 
 const Sepet = ({navigation}) => {
     const {genelResponse}=useSelector(state=>state)
@@ -55,6 +55,12 @@ const totalPrice = genelResponse.urun.reduce((accumulator, current) => {
   return accumulator + current.fiyat*genelResponse.miktar;
 }, 0)
 
+useEffect(()=>{
+  const sayi=genelResponse.urun.length
+  dispatch(setSepetMiktar(sayi))
+  console.log("sa",sayi)
+
+},[genelResponse.urun])
 console.log("totalprice",totalPrice)
  
   return (

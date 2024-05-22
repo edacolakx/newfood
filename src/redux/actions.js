@@ -41,3 +41,15 @@ export const setSurname=(surname)=>{
         payload:surname
     }
 }    
+export const setSepetMiktar=(sepetmiktar)=>{
+    return{
+        type:"SET_SEPETMIKTAR",
+        payload:sepetmiktar
+    }
+}    
+export const setAdresforResReg=(adres)=>{
+    return{
+        type:"SET_ADRESFORRESREG",
+        payload:adres
+    }
+}    

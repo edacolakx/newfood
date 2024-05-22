@@ -7,7 +7,8 @@ export default function Restorantcard(props) {
    <TouchableOpacity onPress={()=>{props.navigation.navigate("Restorant",{
     resim:props.resim,
     min:props.min,
-    isim:props.restoran_name
+    isim:props.restoran_name,
+    adres:props.adres,
    })}}>
         <View style={style.card}>
             <View style={{marginRight:10}}>

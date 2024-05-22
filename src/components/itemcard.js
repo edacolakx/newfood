@@ -41,15 +41,15 @@ const veri=[
               </View>
               
               <Badge style={{ position: "absolute", top: 1, left: 1, backgroundColor: "#E72929" }} size={40}>
-               <TouchableOpacity onPress={showModal}>
-                <Icon onPress={showModal} name='check' size={20} color={"white"}></Icon>
+               <TouchableOpacity onPress={showModal}  style={{justifyContent:"center"}}>
+                <Icon onPress={showModal} name='add-circle-outline' size={30} color={"white"}></Icon>
                </TouchableOpacity>
               </Badge>
  
         </View>
       <Portal>
         <Modal visible={visible} onDismiss={hideModal} dismissableBackButton={true} style={styles.modal}>
-            <ModalComponent isim={props.isim} description={props.description} resim={props.resim} fiyat={props.fiyat} id={props.id}></ModalComponent>
+            <ModalComponent isim={props.isim} description={props.description} resim={props.resim} fiyat={props.fiyat} id={props.id} closeModal={hideModal}></ModalComponent>
         </Modal>
       </Portal>
     </View>

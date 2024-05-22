@@ -38,9 +38,9 @@ export default function ModalComponent(props) {
         const updatedUrunler = [...urunler, urun]; // Yeni bir dizi oluştur
         dispatch(setUrun(updatedUrunler)); // Yeni diziyi Redux durumuna ata
         console.log(updatedUrunler);
-        dispatch(setModal(false))
         dispatch(setMiktarRedux(miktar))
       } 
+      props.closeModal()
     }
     
   return (
