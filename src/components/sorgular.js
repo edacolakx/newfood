@@ -32,15 +32,14 @@ query GetUserByEmail($email: String!) {
 `
 
 export const KAYDOL = gql`
-mutation KullaniciEkle($email: String!, $hesapTipi: String!, $isim: String!, $sifre: String!, $sifreDogrulama: String!, $soyisim: String!) {
-  kullaniciEkle(email: $email, hesapTipi: $hesapTipi, isim: $isim, sifre: $sifre, sifreDogrulama: $sifreDogrulama, soyisim: $soyisim) {
+mutation KullaniciEkle($email: String!, $hesapTipi: String!, $isim: String!, $sifre: String!, $soyisim: String!) {
+  kullaniciEkle(email: $email, hesapTipi: $hesapTipi, isim: $isim, sifre: $sifre, soyisim: $soyisim) {
     kullanici{
       isim:isim,
       soyisim:soyisim,
       email:email,
       hesapTipi:hesapTipi,
-      sifre:sifre,
-      sifreDogrulama:sifreDogrulama
+      sifre:sifre
     }
   }
 }
@@ -169,6 +168,55 @@ mutation urunekle(
         name
         puan
       }
+    }
+  }
+}
+`
+
+
+export const CHECK_USER = gql`
+mutation Getkullanicibyemail($email: String!) {
+  getKullanici(email: $email) {
+    kullanici {
+      isim
+      email
+      hesapTipi
+      id
+      sifre
+      soyisim
+    }
+  }
+}
+`
+
+
+export const GET_USER_BY_EMAIL = gql`
+mutation Getkullanicibyemail($email: String!) {
+  getKullanici(email: $email) {
+    kullanici {
+      isim
+      email
+      hesapTipi
+      id
+      sifre
+      soyisim
+    }
+  }
+
+  }
+`
+
+
+export const LOGIN = gql`
+mutation LoginMutation($email: String!, $sifre: String!) {
+  login(email: $email, sifre: $sifre) {
+		kullanici{
+      id
+      isim
+      soyisim
+      sifre
+      hesapTipi
+      email
     }
   }
 }

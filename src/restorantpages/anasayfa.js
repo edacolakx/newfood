@@ -123,7 +123,7 @@ export default function AnasayfaRestorant({navigation}) {
   const statusTwoItems = veri.filter(item => item.status === 2);
   const FirstRoute = () => (
     <View style={{ flex: 1}} >
-      <Button onPress={()=>{navigation.navigate("Denemee")}}> bas</Button>
+      <Button onPress={()=>{navigation.navigate("Yenideneme")}}> bas</Button>
       <FlatList data={statusZeroItems} renderItem={renderItem}></FlatList>
 
     </View>

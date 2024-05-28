@@ -41,20 +41,28 @@ export default function Urunekle() {
         {key:'2', value:'İçecek'},
         {key:'3', value:'Tatlı'},
     ]
-
-    const [urunekle]=useMutation(URUN_EKLE)
-    async function urunEkle() {
-        try {
-            const {data} = await urunekle({variables:{
+    const veridetay ={
               name:name,
               detay:detay,
-              resim:resim,
-              fiyat:parseInt(fiyat),
-              category:parseInt(kategori),
-              restoran:parseInt(restoran),
+              image:resim,
+              fiyat:parseFloat(fiyat),
+              category:kategori == 'Yemek'? parseInt(1):(kategori == 'İçecek'? parseInt(2):parseInt(3)),
+              restoran:8,
+    }
+    console.log(veridetay)
+    const [addproduct]=useMutation(URUN_EKLE)
+    async function urunEkle() {
+        try {
+            const {data} = await addproduct({variables:{
+              name:name,
+              detay:detay,
+              image:resim,
+              fiyat:parseFloat(fiyat),
+              category:kategori == 'Yemek'? parseInt(1):(kategori == 'İçecek'? parseInt(2):parseInt(3)),
+              restoran:8,
             }})
             console.log(data)
-            console.log('Kaydol başarılı', data.restorankaydol);
+            console.log('Kaydol başarılı', data.addproduct);
           } catch (error) {
             console.log(error)
           }

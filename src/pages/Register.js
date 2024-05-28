@@ -6,6 +6,7 @@ import { useMutation } from '@apollo/client'
 import { KAYDOL } from '../components/sorgular'
 import { Icon } from '@rneui/themed'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
+import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message'
 
 export default function Register({navigation}) {
     const [email, setEmail] = useState("")
@@ -21,57 +22,94 @@ export default function Register({navigation}) {
     function onName(tex){setName(tex)}
     function onSurname(tex){setSurname(tex)}
 
-    
+    const showToastError = () => {
+      Toast.show({
+        type: 'error',
+        text1: 'Hata',
+        text2: 'Eksik veya yanlış bilgi doldurdunuz',
+        swipeable: true,
   
-  const data = [
-      {key:'1', value:'Restoran' },
-      {key:'2', value:'Kullanici'}
-  ]
-
-    function ksaydol() {
-        navigation.navigate("Login")
+      });
     }
+    const showToastSucces = () => {
+      Toast.show({
+        type: 'success',
+        text1: 'Başarılı',
+        text2: 'Başarıyla Kaydoldunuz',
+        swipeable: true,
+  
+      });
+    }
+    const toastConfig={
+      success:(props)=>(
+        <BaseToast
+        {...props}
+        style={{ position: 'absolute', top: 20, right: 20, borderLeftColor: 'green', backgroundColor: 'green' }}        contentContainerStyle={{ paddingHorizontal: 300 }}
+        text1Style={{
+          fontSize: 17,color:"white"
+        }}
+        text2Style={{fontSize: 15,color:"white"}}
+      />
+      ),
+      error: (props) => (
+        <ErrorToast
+          {...props}
+          text1Style={{
+            fontSize: 17,color:"white"
+          }}
+          contentContainerStyle={{backgroundColor:"red",borderLeftColor: 'red'}}
+          text2Style={{
+            fontSize: 15,color:"white"
+          }}
+        />
+      ),
+     }
 
-
+     function validateEmail(email) {
+      // Email için bir regex kullanarak doğrulama yapılıyor
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email);
+    }
     const [kaydol]=useMutation(KAYDOL)
     async function kaydolbuton(){
+
+      if (password!=repassword || email == "" || password == "" || repassword == "" || name == "" || surname == "" || !validateEmail(email)) {
+        showToastError()
+      } else {
         try {
           const {data} = await kaydol({variables:{
             email:email,
-            hesapTipi:selected,
+            hesapTipi:'Kullanici',
             isim:name,
             sifre:password,
-            sifreDogrulama:repassword,
             soyisim:surname
           }})
           console.log('Kaydol başarılı', data.kaydol);
+          showToastSucces()
+          navigation.navigate("Login")
         } catch (error) {
-          
+          console.log(error)
         }
+        
+      }
+
     }
 
   return (
     <View style={{backgroundColor:"white",flex:1}}>
 
-      <TextInput style={styles.input} mode='outlined' onChangeText={onEmail} label={"Email"}></TextInput>
-      <TextInput style={styles.input} mode='outlined' onChangeText={onPassword} label={"Şifre"}></TextInput>
-      <TextInput style={styles.input} mode='outlined' onChangeText={onRepassword} label={"Tekrar Şifre"}></TextInput>
+      <TextInput style={{
+    width:"90%",
+    marginTop:10,
+    alignSelf:"center",
+    backgroundColor:"#FFB9B9", marginTop:100
+  }} mode='outlined' onChangeText={onEmail} label={"Email"}></TextInput>
+      <TextInput style={styles.input} mode='outlined' onChangeText={onPassword} label={"Şifre"} secureTextEntry></TextInput>
+      <TextInput style={styles.input} mode='outlined' onChangeText={onRepassword} label={"Tekrar Şifre"} secureTextEntry></TextInput>
       <TextInput style={styles.input} mode='outlined' onChangeText={onName} label={"İsim"}></TextInput>
       <TextInput style={styles.input} mode='outlined' onChangeText={onSurname} label={"Soyisim"}></TextInput>
-
-      <SelectList 
-        setSelected={(val) => setSelected(val)} 
-        data={data} 
-        save="value"
-        placeholder='Hesap türü seçin'
-        search={false}
-        dropdownShown={false}
-        boxStyles={styles.dropdown}
-    />
-      <Button onPress={kaydolbuton}>Kaydol</Button>
-      <TouchableOpacity style={{alignSelf:"flex-end",marginTop:200,marginRight:5}} onPress={()=>{navigation.navigate("Restoranregister")}}>
-        <Text style={{color:"red"}}>Restoranınızı Eklemek için Tıklayın</Text>
-      </TouchableOpacity>
+      <Button onPress={kaydolbuton} style={styles.buton} textColor='white'>Kaydol</Button>
+      <Toast config={toastConfig}></Toast>
     </View>
   )
 }
@@ -79,7 +117,7 @@ export default function Register({navigation}) {
 const styles = StyleSheet.create({
   input:{
     width:"90%",
-    marginBottom:10,
+    marginTop:10,
     alignSelf:"center",
     backgroundColor:"#FFB9B9"
   },
@@ -87,5 +125,11 @@ const styles = StyleSheet.create({
     width:"90%",
     alignSelf:"center",
     backgroundColor:"#FFB9B9"
+  },
+  buton:{
+    backgroundColor:"red",
+    marginTop:10,
+    width:"90%",
+    alignSelf:"center"
   }
 })

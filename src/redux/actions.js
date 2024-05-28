@@ -53,3 +53,9 @@ export const setAdresforResReg=(adres)=>{
         payload:adres
     }
 }    
+export const setSifre=(sifre)=>{
+    return{
+        type:"SET_SIFRE",
+        payload:sifre
+    }
+}    

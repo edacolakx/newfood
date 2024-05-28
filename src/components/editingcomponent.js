@@ -24,7 +24,7 @@ import { Icon } from '@rneui/themed'
         <View>
   
           <Text style={styles.headline}>{props.headline}</Text>
-          <Text>{props.info}</Text>
+          <Text style={styles.infoo}>{props.infoo}</Text>
         </View>
           <TouchableOpacity style={{marginRight:10,marginTop:10}} onPress={showModal}>
           <Icon name='edit' />
@@ -112,5 +112,8 @@ import { Icon } from '@rneui/themed'
       justifyContent: 'flex-start', 
       alignItems: 'flex-end' ,
       height:"100%"
+    },
+    infoo:{
+      fontWeight:30
     }
   })

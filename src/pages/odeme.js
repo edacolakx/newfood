@@ -8,6 +8,7 @@ Geocoder.init("AIzaSyChaPLZWZcaMntXcfsAgdXfaKt4DF7PBkA");
 import { Card, DefaultTheme, Modal, Portal, Provider as PaperProvider, TextInput } from 'react-native-paper';
 import {  } from 'react-native-gesture-handler';
 import { Icon } from '@rneui/themed';
+import { useSelector } from 'react-redux';
 
 
 export default function MapScreen({navigation}) {
@@ -22,7 +23,7 @@ export default function MapScreen({navigation}) {
    const [no,setNo] = useState("")
    const [postaKodu,setPostaKodu] = useState("")
    const [adresTarifi,setAdresTarifi] = useState("")
-
+  const {genelResponse} = useSelector(state=>state)
   function onUlke(tex){setUlke(tex)
     updateDeliveryAddress()
   }
@@ -164,8 +165,8 @@ const hideModal = () => setModal(false);
 
                  <Text style={{color:"black",fontWeight:"bold",marginTop:3,marginLeft:3}}>Teslim Alıcak Kişinin:</Text>
                  <View style={{flexDirection:"row",justifyContent:"center"}}>
-                 <TextInput mode='outlined' style={styles.inputname} onChangeText={onAdresTarifi} textColor='black' label='İsim'></TextInput>
-                 <TextInput mode='outlined' style={styles.inputname} onChangeText={onAdresTarifi} textColor='black' label='Soyisim'></TextInput>
+                 <TextInput mode='outlined' style={styles.inputname} onChangeText={onAdresTarifi} textColor='black' label='İsim' value={genelResponse.name}></TextInput>
+                 <TextInput mode='outlined' style={styles.inputname} onChangeText={onAdresTarifi} textColor='black' label='Soyisim' value={genelResponse.surname}></TextInput>
 
                  </View>
                  <TextInput mode='outlined' style={styles.inputtel} onChangeText={onAdresTarifi} textColor='black' label='Telefon Numarası'></TextInput>

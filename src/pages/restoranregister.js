@@ -147,7 +147,7 @@ async function kaydolbuton(){
     }} mode='outlined' onChangeText={onTelefon} label={genelResponse.adresforres}></TextInput>
     </View>
     <Button onPress={kaydolbuton}>Kaydol</Button>
-    <Button onPress={resima}>Kaydol</Button>
+    <Button onPress={resima}>Resim</Button>
     <Image source={{uri:resim}} style={{width:100,height:100}}></Image>
     <Portal>
         <Modal visible={modal} onDismiss={hideModal} dismissableBackButton={true} style={{backgroundColor:"white",flex:1,height:"100%",borderWidth:2}}>

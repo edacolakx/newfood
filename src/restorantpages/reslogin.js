@@ -2,61 +2,62 @@ import { View, Text,StyleSheet ,Image, Touchable, TouchableOpacity} from 'react-
 import React, { useDebugValue, useEffect, useState } from 'react'
 import { Button, TextInput } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
-import { setEmail, setName, setSifre, setStatus, setSurname } from '../redux/actions'
+import { setEmail, setName, setStatus } from '../redux/actions'
 import { useMutation, useQuery } from '@apollo/client'
-import { GET_NAME, GET_RESTAURANT_BY_EMAIL, GET_USER_BY_EMAIL, LOGIN } from '../components/sorgular'
+import { GET_NAME, GET_RESTAURANT_BY_EMAIL } from '../components/sorgular'
 import { Icon } from '@rneui/themed'
 
 
-export default function Login({navigation}) {
+export default function ResLogin({navigation}) {
 
 
   const {genelResponse} = useSelector(state => state)
   
     const [email, setEmailone] = useState("")
     const [password, setPassword] = useState("")
-    const [userdata, setUserData] = useState(null);
-    const [isim,setIsim] = useState()
-    const [soyisim,setSoyisim] = useState()
+    const [restoranData, setRestoranData] = useState(null);
 
     function onEmail(tex){setEmailone(tex)}
     function onPassword(tex){setPassword(tex)}
     const dispatch=useDispatch()
-
-    const [getUser] = useMutation(LOGIN)
+    const[getRes] =useMutation(GET_RESTAURANT_BY_EMAIL)
 
     function sifremiunutum() {
         navigation.navigate("Forgotpassword")
     }
 
-    function userlogin() {
+
+    useEffect(()=>{
       if (email) {
-        getUser({ variables: { email: email , sifre: password } }).then(result => {
-          if (result.error) {
-            console.log("error",result.error)
-          } else {
-            console.log("object",result.data.login.kullanici.hesapTipi)
-            dispatch(setStatus(result.data.login.kullanici.hesapTipi))
-            dispatch(setName(result.data.login.kullanici.isim))
-            dispatch(setSurname(result.data.login.kullanici.soyisim))
-            dispatch(setSifre(result.data.login.kullanici.sifre))
-            dispatch(setEmail(result.data.login.kullanici.email))
-            console.log("soyisim",result.data.login.kullanici.soyisim)
-            navigation.navigate("Root")
-          }
-      }).catch(error => {
-          console.log("Error fetching data:", error);
-      });
-      }
-        
+        getRes({ variables: { email: email } }).then(result => {
+            setRestoranData(result.data.getRestoran.restoran);
+            console.log("object",result.data.getRestoran.restoran)
+        }).catch(error => {
+            console.log("Error fetching data:", error);
+        });
     }
+    },[])
+
+
+    function userlogin() {
+      dispatch(setStatus("müşteri"))
+      console.log(email)
+      dispatch(setEmail(email))
+      try{
+      const {data} =  getRes({variables:{
+          email:email
+        }})
+      }
+      catch(error){
+        console.log(error)
+      }
+        navigation.navigate("Root")
+    }
+
 
     function userregister() {
-        navigation.navigate("Register")
+        navigation.navigate("Restoranregister")
     }
-
-
-
   return (
     <View style={{alignItems:"center",backgroundColor:"#EEEDED",flex:1}}>
      <Icon name='fastfood' size={100} style={{marginBottom:40,marginTop:100}}></Icon>
@@ -74,9 +75,6 @@ export default function Login({navigation}) {
           <Text onPress={userregister} style={{color:"red"}}>kaydolun</Text>
         </TouchableOpacity>
         </View>
-        <TouchableOpacity >
-          <Text onPress={()=>{navigation.navigate("ResLogin")}} style={{color:"red", position: "absolute", bottom: -330, right: -210}}>Restoran işlemleri için tıklayın</Text>
-        </TouchableOpacity>
 
     </View>
   )

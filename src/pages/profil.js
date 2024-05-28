@@ -12,6 +12,7 @@ import CustomCard from '../components/editingcomponent'
 
 export default function Profil() {
   const {genelResponse}=useSelector(state=>state)
+  console.log("isim",genelResponse.name)
   const [name,setName]=useState('')
   const [surname,setSurname]=useState('')
   const [email,setEmail]=useState('')
@@ -20,29 +21,13 @@ export default function Profil() {
   const [birthday,setBirthday]=useState('')
 
 
-  useEffect(()=>{
-    async function getUserInfo(){
-      try {
-          const response = await axios.get('https://jsonplaceholder.typicode.com/users')
-              const data = response.data;
-              const currentUser = data.filter(item => item.email === genelResponse.email);           
-              setName(currentUser[0].name)
-              setEmail(currentUser[0].email)
-              setPhone(currentUser[0].phone)
-          } catch (error) {
-              console.error("error",error);
-          }
-      };
-    getUserInfo()
-  },[])
-  
   return (
     <View style={styles.view}>
-      <CustomCard headline={"İsim"} info={name}/>
-      <CustomCard headline={"Email"} info={email}/>
-      <CustomCard headline={"Şifre"} info={password}/>
-      <CustomCard headline={"Telefon"} info={phone}/>
-      <CustomCard headline={"Doğum Günü"} info={birthday}/>
+      <CustomCard headline={"İsim"} infoo={genelResponse.name+" "+genelResponse.surname}/>
+      <CustomCard headline={"Email"} infoo={genelResponse.email}/>
+      <CustomCard headline={"Şifre"} infoo={genelResponse.sifre}/>
+      <CustomCard headline={"Telefon"} infoo={phone}/>
+      <CustomCard headline={"Doğum Günü"} infoo={birthday}/>
     </View>
   )
 }

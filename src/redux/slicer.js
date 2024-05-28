@@ -1,5 +1,5 @@
 const INITIAL_STATE={
-    email:"",urun:[],stat:"",modal:false,miktar:1,name:"",surname:"",sepetmiktar:0,adresforres:""
+    email:"",urun:[],stat:"",modal:false,miktar:1,name:"",surname:"",sepetmiktar:0,adresforres:"",sifre:""
 }
 const genelResponseReducer= (state=INITIAL_STATE,action)=>{
     switch (action.type) {
@@ -21,6 +21,8 @@ const genelResponseReducer= (state=INITIAL_STATE,action)=>{
                 return {...state,sepetmiktar:action.payload}
         case "SET_ADRESFORRESREG":
                 return {...state,adresforres:action.payload}
+        case "SET_SIFRE":
+                return {...state,sifre:action.payload}
         default:
            return state
     }

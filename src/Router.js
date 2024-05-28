@@ -37,6 +37,9 @@ import Restoranregister from './pages/restoranregister';
 import Denemee from './restorantpages/denemee';
 import Profilupdateres from './restorantpages/profilupdate';
 import Urunekle from './restorantpages/urunekle';
+import Yenideneme from './restorantpages/yenideneme';
+import SiparisdetayUser from './pages/siparisdetay';
+import ResLogin from './restorantpages/reslogin';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -48,12 +51,12 @@ function Home() {
   return (
     <>
     {
-      stat =="müşteri" ? (
+      stat =="KULLANICI" ? (
         <Tab.Navigator>
       <Tab.Screen name="Anasayfa" component={Anasayfa} options={{headerShown:false,tabBarIcon:({})=>(
         <Icon name='home-filled'></Icon>
       )}}  />
-      <Tab.Screen name="Profil" component={ProfilUpdate} options={{headerShown:false,tabBarIcon:({})=>(
+      <Tab.Screen name="Profil" component={Profil} options={{headerShown:false,tabBarIcon:({})=>(
         <Icon name='person'></Icon>
       )}} />
       <Tab.Screen name="Sepet" component={Sepet} options={{headerShown:false,tabBarIcon:({})=>(
@@ -89,7 +92,7 @@ function Root() {
   return (
     <>
       {
-        stat == "müşteri" ? (
+        stat == "KULLANICI" ? (
           <Drawer.Navigator>
           <Drawer.Screen name="Yemek" component={Home} />
           <Drawer.Screen name="Settings" component={Settings} />
@@ -113,6 +116,7 @@ export default function App() {
 
   return (
     <Provider store={store} >
+      
 <GestureHandlerRootView>
 <ApolloProvider client={client}>
 
@@ -144,6 +148,9 @@ export default function App() {
         <Stack.Screen name='AddressToLatLng' component={AddressToLatLng}/>
         <Stack.Screen name='Restoranregister' component={Restoranregister}/>
         <Stack.Screen name='Denemee' component={Denemee}/>
+        <Stack.Screen name='Yenideneme' component={Yenideneme}/>
+        <Stack.Screen name='ResLogin' component={ResLogin}/>
+        <Stack.Screen name='SiparisdetayUser' component={SiparisdetayUser}/>
       </Stack.Navigator>
     </NavigationContainer>
           </PaperProvider>
