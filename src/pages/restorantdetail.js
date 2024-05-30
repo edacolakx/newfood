@@ -5,9 +5,11 @@ import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import Itemcard from '../components/itemcard'
 import { useQuery } from '@apollo/client'
 import { GET_URUNLER } from '../components/sorgular'
+import { useSelector } from 'react-redux'
 
 export default function Restorantdetail({route,navigation}) {
   const {error,loading,data} = useQuery(GET_URUNLER)
+  const { genelResponse } = useSelector(state=>state)
   const [urunler,setUrunler]=useState([])
   const [tatliKategorisi,setTatlikategorisi] = useState([])
   const [yemekKategorisi,setYemekkategorisi] = useState([])
@@ -17,7 +19,7 @@ export default function Restorantdetail({route,navigation}) {
     if (data && data.urunler) {
       try {
         console.log(data.urunler);
-        const filteredData = data.urunler.filter(urun => urun.restoran.id == 8);
+        const filteredData = data.urunler.filter(urun => urun.restoran.id == id);
         setUrunler(filteredData);
 
         const kategorilereGoreUrunler = filteredData.reduce((acc, curr) => {
@@ -86,7 +88,7 @@ export default function Restorantdetail({route,navigation}) {
   ]);
   const [index, setIndex] = React.useState(0);
   const layout = useWindowDimensions();
-  const {resim,min,isim,adres}=route.params
+  const {resim,min,isim,adres,id}=route.params
 
   return (
     <View style={{flex:1}}>

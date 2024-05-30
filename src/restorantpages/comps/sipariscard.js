@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   view: {
     marginBottom: 5,
     marginTop: 5,
-    backgroundColor: '#FFB9B9',
+    backgroundColor: 'white',
   },
   badge: {
     position: 'relative',

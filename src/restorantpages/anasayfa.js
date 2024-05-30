@@ -111,7 +111,7 @@ export default function AnasayfaRestorant({navigation}) {
     },
   ]
 
-
+  
   const renderItem=(({item})=>(
     <View>
       <SiparisCard siparisurun={item.siparisurun} status={item.status} isim={item.isim} adres={item.adres} siparisdetay={item.siparisdetay}></SiparisCard>
@@ -123,7 +123,6 @@ export default function AnasayfaRestorant({navigation}) {
   const statusTwoItems = veri.filter(item => item.status === 2);
   const FirstRoute = () => (
     <View style={{ flex: 1}} >
-      <Button onPress={()=>{navigation.navigate("Yenideneme")}}> bas</Button>
       <FlatList data={statusZeroItems} renderItem={renderItem}></FlatList>
 
     </View>

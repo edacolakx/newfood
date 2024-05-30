@@ -2,6 +2,7 @@ import { View, Text, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_URUNLER } from '../components/sorgular';
+import { Button, Modal } from 'react-native-paper';
 
 export default function Deneme() {
   const { error, loading, data } = useQuery(GET_URUNLER);
@@ -30,26 +31,13 @@ export default function Deneme() {
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
-
+  const[model,setModel]=useState(false)
   return (
     <View>
-      {Object.keys(ka).map(kategori => (
-        <View key={kategori}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{kategori}</Text>
-          <FlatList
-            data={ka[kategori]}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <View>
-                <Text>{item.name}</Text>
-                <Text>{item.detay}</Text>
-                <Text>{item.fiyat}</Text>
-                {/* Diğer bilgileri de gösterebilirsiniz */}
-              </View>
-            )}
-          />
-        </View>
-      ))}
+      <Button onPress={()=>setModel(true)}>bas</Button>
+      <Modal visible={model}>
+        <Text>Deneme</Text>
+      </Modal>
     </View>
   );
 }

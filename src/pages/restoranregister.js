@@ -5,11 +5,12 @@ import { SelectList } from 'react-native-dropdown-select-list'
 import { Icon } from '@rneui/themed'
 import Harita from '../restorantpages/comps/harita'
 import { useSelector } from 'react-redux'
-import { RESTAURANT_REGISTER } from '../components/sorgular'
+import { GET_RESTAURANT_BY_EMAIL, RESTAURANT_REGISTER } from '../components/sorgular'
 import { useMutation } from '@apollo/client'
 import { launchImageLibrary } from 'react-native-image-picker'
+import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message'
 
-export default function Restoranregister() {
+export default function Restoranregister({route,navigation}) {
 
     const [name,setName]=useState("")
     const [email,setEmail]=useState("")
@@ -73,26 +74,16 @@ const resima=()=>{
     setResim(fileName)
   })
 }
-const veri={
-  name:name,
-        email:email,
-        adres:adresrsrs,
-        category:selected,
-        minTutar:min,
-        acilisSaati:parseFloat("10.0"),
-        kapanisSaati:parseFloat("10.0"),
-        puan:0,
-        resim:resim,
-        telefon:telefon,
-        sifre:sifre,
-        hesaptipi:"Restoran"
-}
-console.log("veri",veri)
+const {isim,soyisim,eposta,password,telefon_no} = route.params
 async function kaydolbuton(){
+  if(min == "" || acilis == "" || kapanis == "" || resim == "" || adresrsrs == "") {
+    showToastError()
+}
+  else{
     try {
       const {data} = await restorankaydol({variables:{
-        name:name,
-        email:email,
+        name:isim + " " + soyisim,
+        email:eposta,
         adres:adresrsrs,
         category:selected,
         minTutar:parseFloat(min),
@@ -100,31 +91,73 @@ async function kaydolbuton(){
         kapanisSaati:kapanis,
         puan:parseFloat(0),
         resim:resim,
-        telefon:telefon,
-        sifre:sifre,
+        telefon:telefon_no,
+        sifre:password,
         hesapTipi:"Restoran"
       }})
       console.log(data)
       console.log('Kaydol başarılı', data.restorankaydol);
+      showToastSucces()
+      navigation.navigate("Login")
+
     } catch (error) {
       console.log(error)
     }
+  }
 }
+const showToastError = () => {
+  Toast.show({
+    type: 'error',
+    text1: 'Hata',
+    text2: 'Eksik veya yanlış bilgi doldurdunuz',
+    swipeable: true,
+
+  });
+}
+const showToastSucces = () => {
+  Toast.show({
+    type: 'success',
+    text1: 'Başarılı',
+    text2: 'Başarıyla Kaydoldunuz',
+    swipeable: true,
+
+  });
+}
+const toastConfig={
+  success:(props)=>(
+    <BaseToast
+    {...props}
+    style={{ position: 'absolute', top: 20, right: 20, borderLeftColor: 'green', backgroundColor: 'green' }}        contentContainerStyle={{ paddingHorizontal: 300 }}
+    text1Style={{
+      fontSize: 17,color:"white"
+    }}
+    text2Style={{fontSize: 15,color:"white"}}
+  />
+  ),
+  error: (props) => (
+    <ErrorToast
+      {...props}
+      text1Style={{
+        fontSize: 17,color:"white"
+      }}
+      contentContainerStyle={{backgroundColor:"red",borderLeftColor: 'red'}}
+      text2Style={{
+        fontSize: 15,color:"white"
+      }}
+    />
+  ),
+ }
 
   return (
     <View>
-      <TextInput style={styles.input} textColor='black' mode='outlined' onChangeText={onName} label={"Restoranınızın İsmi"}></TextInput>
-      <TextInput style={styles.input} textColor='black' mode='outlined' onChangeText={onEmail} label={"Email"}></TextInput>
       <TextInput style={styles.input} textColor='black' mode='outlined' onChangeText={onMin} label={"Minimum Tutar"}></TextInput>
       <TextInput style={styles.input} textColor='black' mode='outlined' onChangeText={onAcilis} label={"Açılış Saati"}></TextInput>
-      <TextInput style={styles.input} textColor='black' mode='outlined' onChangeText={onKapanis} label={"Kapanış Saati"}></TextInput>
-      <TextInput style={styles.input} textColor='black' mode='outlined' onChangeText={onSifre} label={"Şifre"}></TextInput>
-      <TextInput style={styles.input} textColor='black' mode='outlined' onChangeText={onResifre} label={"Tekrar Şifre"}></TextInput>
-      <TextInput style={styles.input}  theme={{
+      <TextInput style={styles.input} textColor='black' mode='outlined' onChangeText={onKapanis} label={"Kapanış Saati"}  theme={{
          colors: {
             primary: 'blue', // Etiketin rengini buradan ayarlayabilirsiniz
           },
-      }} mode='outlined' onChangeText={onTelefon} label={"Telefon Numarası"}></TextInput>
+      }}></TextInput>
+     
 
       <SelectList
         setSelected={(val) => setSelected(val)} 
@@ -154,6 +187,8 @@ async function kaydolbuton(){
             <Harita hideModal={hideModal}></Harita>
         </Modal>
     </Portal>
+    <Toast config={toastConfig}></Toast>
+
     </View>
   )
 }

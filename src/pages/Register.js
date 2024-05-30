@@ -15,13 +15,15 @@ export default function Register({navigation}) {
     const [surname, setSurname] = useState("")
     const [selected, setSelected] = React.useState("");
     const [repassword,setRepassword]=useState("")
+    const [telefon,setTelefon]=useState("")
 
     function onEmail(tex){setEmail(tex)}
     function onPassword(tex){setPassword(tex)}
     function onRepassword(tex){setRepassword(tex)}
     function onName(tex){setName(tex)}
+    
     function onSurname(tex){setSurname(tex)}
-
+    function onTelefon(tex){setTelefon(tex)}
     const showToastError = () => {
       Toast.show({
         type: 'error',
@@ -71,30 +73,52 @@ export default function Register({navigation}) {
       return regex.test(email);
     }
     const [kaydol]=useMutation(KAYDOL)
+
     async function kaydolbuton(){
-
-      if (password!=repassword || email == "" || password == "" || repassword == "" || name == "" || surname == "" || !validateEmail(email)) {
+      if (password!=repassword || email == "" || password == "" || repassword == "" || name == "" || surname == "" ||telefon=="" || !validateEmail(email)) {
+         
         showToastError()
-      } else {
-        try {
-          const {data} = await kaydol({variables:{
-            email:email,
-            hesapTipi:'Kullanici',
-            isim:name,
-            sifre:password,
-            soyisim:surname
-          }})
-          console.log('Kaydol başarılı', data.kaydol);
-          showToastSucces()
-          navigation.navigate("Login")
-        } catch (error) {
-          console.log(error)
-        }
-        
+      }else{
+          
+          if (selected == "Restoran"){
+            const {data} = await kaydol({variables:{
+              email:email,
+              hesapTipi:selected,
+              isim:name,
+              sifre:password,
+              soyisim:surname,
+              telefon_no:telefon
+            }})
+            navigation.navigate("Restoranregister",{
+              eposta:email,
+              password:password,
+              isim:name,
+              soyisim:surname,
+              telefon_no:telefon
+            })
+          }else{
+            try {
+                const {data} = await kaydol({variables:{
+                  email:email,
+                  hesapTipi:selected,
+                  isim:name,
+                  sifre:password,
+                  soyisim:surname,
+                  telefon_no:telefon
+                }})
+                console.log('Kaydol başarılı', data.kaydol);
+                navigation.navigate("Login")
+                showToastSucces()
+              } catch (error) {
+                console.log(error)
+              }
+          }
       }
-
-    }
-
+  }
+    const data = [
+      {key:'1', value:'Kullanici' },
+      {key:'2', value:'Restoran'},
+  ]
   return (
     <View style={{backgroundColor:"white",flex:1}}>
 
@@ -108,6 +132,16 @@ export default function Register({navigation}) {
       <TextInput style={styles.input} mode='outlined' onChangeText={onRepassword} label={"Tekrar Şifre"} secureTextEntry></TextInput>
       <TextInput style={styles.input} mode='outlined' onChangeText={onName} label={"İsim"}></TextInput>
       <TextInput style={styles.input} mode='outlined' onChangeText={onSurname} label={"Soyisim"}></TextInput>
+      <TextInput style={styles.input} mode='outlined' onChangeText={onTelefon} label={"Telefon"}></TextInput>
+      <SelectList
+        setSelected={(val) => setSelected(val)} 
+        data={data} 
+        save="value"
+        placeholder='Ürünün Kategorisi'
+        search={false}
+        dropdownShown={false}
+        style={styles.input}
+    />
       <Button onPress={kaydolbuton} style={styles.buton} textColor='white'>Kaydol</Button>
       <Toast config={toastConfig}></Toast>
     </View>

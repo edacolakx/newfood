@@ -32,14 +32,15 @@ query GetUserByEmail($email: String!) {
 `
 
 export const KAYDOL = gql`
-mutation KullaniciEkle($email: String!, $hesapTipi: String!, $isim: String!, $sifre: String!, $soyisim: String!) {
-  kullaniciEkle(email: $email, hesapTipi: $hesapTipi, isim: $isim, sifre: $sifre, soyisim: $soyisim) {
+mutation KullaniciEkle($email: String!, $hesapTipi: String!, $isim: String!, $sifre: String!, $soyisim: String!,$telefon_no:String!) {
+  kullaniciEkle(email: $email, hesapTipi: $hesapTipi, isim: $isim, sifre: $sifre, soyisim: $soyisim,telefonNo:$telefon_no) {
     kullanici{
       isim:isim,
       soyisim:soyisim,
       email:email,
       hesapTipi:hesapTipi,
-      sifre:sifre
+      sifre:sifre,
+      telefonNo:telefonNo
     }
   }
 }
@@ -82,6 +83,7 @@ mutation RestoranEkle($name: String!,$sifre:String!,$hesapTipi:String!, $email: 
 export const GET_RESTAURANT = gql`
 query MyQuery {
   restoranlar {
+    id
     acilisSaati
     category
     adres
@@ -102,6 +104,7 @@ export const GET_RESTAURANT_BY_EMAIL = gql`
 mutation MyMutation($email: String!) {
   getRestoran(email: $email) {
     restoran {
+      id
       name
       email
       minTutar
@@ -217,7 +220,56 @@ mutation LoginMutation($email: String!, $sifre: String!) {
       sifre
       hesapTipi
       email
+      telefonNo
     }
   }
+}
+`
+
+
+export const USER_UPDATE = gql`
+mutation UpdateUserName($id: ID, $telefon_no: String, $isim: String, $soyisim: String, $sifre: String, $email: String, $hesapTipi: String) {
+  kullaniciGuncelle(
+    id: $id
+    email: $email
+    hesapTipi: $hesapTipi
+    isim: $isim
+    soyisim: $soyisim
+    sifre: $sifre
+    telefonNo: $telefon_no
+  ) {
+    kullanici {
+      id
+      isim
+      soyisim
+      email
+      sifre
+      hesapTipi
+      telefonNo
+    }
+  }
+}
+`
+export const SIPARIS_EKLE = gql`
+mutation siparisEkle($siparisItems: [SiparisItemInput!]!) {
+  siparisEkle(siparisItems: $siparisItems) {
+    siparis {
+      id
+      toplamTutar
+    }
+  }
+}
+`;
+
+
+export const DELETE_RESTAURANT = gql`
+mutation MyMutation ($id:ID!){
+  restoranSil(id:$id){restoran{name}}
+}
+`
+
+export const DELETE_USER = gql `
+mutation MyMutation ($id:ID!){
+  kullaniciSil(id:$id){kullanici{isim}}
 }
 `

@@ -1,8 +1,8 @@
-import { View, Text,StyleSheet ,Image, Touchable, TouchableOpacity} from 'react-native'
+import { View, Text,StyleSheet ,Image, Touchable, TouchableOpacity, Alert} from 'react-native'
 import React, { useDebugValue, useEffect, useState } from 'react'
 import { Button, TextInput } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
-import { setEmail, setName, setSifre, setStatus, setSurname } from '../redux/actions'
+import { setEmail, setId, setName, setSifre, setStatus, setSurname, setTelefon } from '../redux/actions'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_NAME, GET_RESTAURANT_BY_EMAIL, GET_USER_BY_EMAIL, LOGIN } from '../components/sorgular'
 import { Icon } from '@rneui/themed'
@@ -33,7 +33,7 @@ export default function Login({navigation}) {
       if (email) {
         getUser({ variables: { email: email , sifre: password } }).then(result => {
           if (result.error) {
-            console.log("error",result.error)
+            
           } else {
             console.log("object",result.data.login.kullanici.hesapTipi)
             dispatch(setStatus(result.data.login.kullanici.hesapTipi))
@@ -41,11 +41,18 @@ export default function Login({navigation}) {
             dispatch(setSurname(result.data.login.kullanici.soyisim))
             dispatch(setSifre(result.data.login.kullanici.sifre))
             dispatch(setEmail(result.data.login.kullanici.email))
-            console.log("soyisim",result.data.login.kullanici.soyisim)
+            dispatch(setId(result.data.login.kullanici.id))
+            dispatch(setTelefon(result.data.login.kullanici.telefonNo))
+
+            console.log("soyisim",result.data.login.kullanici.telefonNo)
             navigation.navigate("Root")
+            
           }
       }).catch(error => {
           console.log("Error fetching data:", error);
+          {
+            Alert.alert("Hata", "Kullanıcı adı veya şifre hatalı")
+          }
       });
       }
         
@@ -62,7 +69,7 @@ export default function Login({navigation}) {
      <Icon name='fastfood' size={100} style={{marginBottom:40,marginTop:100}}></Icon>
 
         <TextInput onChangeText={onEmail} label={"Email "} style={styles.input} textColor='black'></TextInput>
-        <TextInput onChangeText={onPassword} label={"Şifre "} style={styles.input}></TextInput>
+        <TextInput onChangeText={onPassword} label={"Şifre "} style={styles.input} secureTextEntry></TextInput>
         <TouchableOpacity onPress={sifremiunutum} style={{flexDirection:"row-reverse",marginRight:170,marginBottom:30}}>
           <Text style={{color:"black"}}>Şifrenizi mi unuttunuz?</Text>
         </TouchableOpacity>
@@ -74,9 +81,6 @@ export default function Login({navigation}) {
           <Text onPress={userregister} style={{color:"red"}}>kaydolun</Text>
         </TouchableOpacity>
         </View>
-        <TouchableOpacity >
-          <Text onPress={()=>{navigation.navigate("ResLogin")}} style={{color:"red", position: "absolute", bottom: -330, right: -210}}>Restoran işlemleri için tıklayın</Text>
-        </TouchableOpacity>
 
     </View>
   )

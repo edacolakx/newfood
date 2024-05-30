@@ -4,31 +4,32 @@ import { Avatar, Button, Switch } from 'react-native-paper';
 import Restorantcard from '../components/restorantcard';
 import { GET_RESTAURANT } from '../components/sorgular';
 import { useQuery } from '@apollo/client';
+import { useSelector } from 'react-redux';
 
 export default function Anasayfa({ navigation }) {
-  const { loading, error, data } = useQuery(GET_RESTAURANT);
+  const { loading, error, data ,refetch} = useQuery(GET_RESTAURANT);
   const [sortedData, setSortedData] = useState([]);
   const [isEnabled, setIsEnabled] = useState(false);
-
+  const { genelResponse } = useSelector(state => state);
   useEffect(() => {
     if (data && data.restoranlar) {
       const sortedRestaurants = [...data.restoranlar].sort((a, b) =>
         isEnabled ? a.minTutar - b.minTutar : b.minTutar - a.minTutar
       );
       setSortedData(sortedRestaurants);
+      refetch()
     }
-  }, [data, isEnabled]);
+  }, [data, isEnabled,genelResponse.email]);
 
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const renderItem = ({ item }) => (
-    <Restorantcard restoran_name={item.name} min={item.minTutar} resim={item.resim} navigation={navigation} adres={item.adres} />
+    <Restorantcard restoran_id={item.id} restoran_name={item.name} min={item.minTutar} resim={item.resim} navigation={navigation} adres={item.adres} />
   );
 
   return (
     <View>
       <Text style={styles.text}>Kategoriler</Text>
-      <Button onPress={()=>{navigation.navigate("Deneme")}}>bas</Button>
       <FlatList
         horizontal
         data={data?.restoranlar.map(item => item.category).filter((value, index, self) => self.indexOf(value) === index)}

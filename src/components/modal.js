@@ -11,7 +11,7 @@ export default function ModalComponent(props) {
     const {genelResponse}=useSelector(state=>state)
     const urunler=genelResponse.urun
 
-    urun={
+   const urun={
       id:props.id,
       isim:props.isim,
       description:props.description,
@@ -28,20 +28,22 @@ export default function ModalComponent(props) {
     }
     console.log(miktar)
     const urunSepetteVarMi = sepetteUrunVarMi(genelResponse.urun, props.id);
-    
-    function sepeteekle() {
-      if (urunSepetteVarMi) {
-        console.log("Ürün sepette zaten var.");
-        
+    function onText(tex){setText(tex)} 
+
+    const sepeteEkle = () => {
+      // Ürünün sepette olup olmadığını kontrol et
+      const index = genelResponse.urun.findIndex(item => item.id === urun.id);
+      console.log(index)
+      if (index >0) {
+        // Ürün zaten sepette varsa, miktarını artır
+        const yeniSepet = [...genelResponse.urun];
+        yeniSepet[index].miktar=yeniSepet[index].miktar+1;
+        dispatch(setUrun(yeniSepet))
       } else {
-        console.log("Ürün sepette yok, eklenebilir.");
-        const updatedUrunler = [...urunler, urun]; // Yeni bir dizi oluştur
-        dispatch(setUrun(updatedUrunler)); // Yeni diziyi Redux durumuna ata
-        console.log(updatedUrunler);
-        dispatch(setMiktarRedux(miktar))
-      } 
-      props.closeModal()
-    }
+        // Ürün sepette yoksa, yeni bir öğe olarak ekle
+       dispatch( setUrun([...genelResponse.urun, { ...urun, miktar: miktar }]));
+      }
+    };
     
   return (
     <View style={{height:"100%"}}>
@@ -56,8 +58,8 @@ export default function ModalComponent(props) {
     <Text style={{color:"black",fontSize:20,marginLeft:10}}>{props.description}</Text>
     <Text style={{color:"black",fontSize:20,marginRight:10,marginBottom:50,textAlign:"right"}}>{props.fiyat} TL</Text>
       <TextInput style={styles.input} 
-        placeholderTextColor={"black"} onChangeText={setText}
-        numberOfLines={4} multiline={true} placeholder='Notunuzu Yazınız'></TextInput>
+        placeholderTextColor={"black"} onChangeText={onText}
+        numberOfLines={4} multiline={true} placeholder='Notunuzu Yaziniz'></TextInput>
 
 
          <View style={{flexDirection:"row",width:"90%",alignSelf:"center",justifyContent:"space-evenly"}}>
@@ -68,7 +70,7 @@ export default function ModalComponent(props) {
           <TouchableOpacity onPress={()=>{setmiktar(miktar+1)}} style={{marginTop:5}}>
             <Text style={styles.text}>+</Text>
           </TouchableOpacity>
-          <Button mode='elevated' onPress={sepeteekle} style={{backgroundColor:"red"}} labelStyle={{color:"white"}}>Sepete Ekle</Button>
+          <Button mode='elevated' onPress={sepeteEkle} style={{backgroundColor:"red"}} labelStyle={{color:"white"}}>Sepete Ekle</Button>
         </View>
     </View>
   )

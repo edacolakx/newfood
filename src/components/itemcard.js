@@ -15,20 +15,17 @@ const veri=[
         isim:props.isim,
         aciklama:props.description,
         fiyat:props.fiyat,
-        resim:props.resim
+        resim:props.resim,
     }
 ]
- const array=[]
- const [visible, setVisible] = React.useState(false);
+ const[model,setModel]=useState(false)
  const dispatch=useDispatch()
     function showModal(){
-      setVisible(true)
-        dispatch(setModal(true))
-        array.push(veri)
-        console.log(array)
+      console.log("object")
+      setModel(true)
     }
 
-    const hideModal = () => setVisible(false);
+    const hideModal = () => setModel(false);
   return (
     <View>
         <View style={styles.card}>
@@ -42,15 +39,16 @@ const veri=[
               
               <Badge style={{ position: "absolute", top: 1, left: 1, backgroundColor: "#E72929" }} size={40}>
                <TouchableOpacity onPress={showModal}  style={{justifyContent:"center"}}>
-                <Icon onPress={showModal} name='add-circle-outline' size={30} color={"white"}></Icon>
+                <Icon  name='add-circle-outline' size={30} color={"white"}></Icon>
                </TouchableOpacity>
               </Badge>
- 
+        
         </View>
       <Portal>
-        <Modal visible={visible} onDismiss={hideModal} dismissableBackButton={true} style={styles.modal}>
-            <ModalComponent isim={props.isim} description={props.description} resim={props.resim} fiyat={props.fiyat} id={props.id} closeModal={hideModal}></ModalComponent>
-        </Modal>
+
+      <Modal visible={model} style={styles.modal} onDismiss={hideModal}>
+        <ModalComponent isim={props.isim} description={props.description} resim={props.resim} fiyat={props.fiyat} id={props.id} closeModal={hideModal}></ModalComponent>
+      </Modal>
       </Portal>
     </View>
   )
@@ -70,11 +68,9 @@ const styles=StyleSheet.create({
         borderWidth:1
       },
       modal:{
-        flex:1,
         backgroundColor:"white",
-        height:450,
-        marginTop:150,
-        width:330,
-        marginLeft:30,
+        height:"50%",
+        width:"90%",
+        
       }
 })

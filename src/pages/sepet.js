@@ -42,7 +42,7 @@ const Sepet = ({navigation}) => {
               }} style={{marginTop:5}}>
             <Text style={styles.text}>-</Text>
           </TouchableOpacity>
-              <Text style={{color:"black",fontSize:25,marginRight:20,marginTop:5}}>{genelResponse.miktar}</Text>
+              <Text style={{color:"black",fontSize:25,marginRight:20,marginTop:5}}>{item.miktar}</Text>
           <TouchableOpacity onPress={()=>{dispatch(setMiktarRedux(genelResponse.miktar+1))}} style={{marginTop:5}}>
             <Text style={styles.text}>+</Text>
           </TouchableOpacity>

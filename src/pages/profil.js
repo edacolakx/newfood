@@ -23,10 +23,10 @@ export default function Profil() {
 
   return (
     <View style={styles.view}>
-      <CustomCard headline={"İsim"} infoo={genelResponse.name+" "+genelResponse.surname}/>
-      <CustomCard headline={"Email"} infoo={genelResponse.email}/>
-      <CustomCard headline={"Şifre"} infoo={genelResponse.sifre}/>
-      <CustomCard headline={"Telefon"} infoo={phone}/>
+      <CustomCard headline={"İsim"} infoo={genelResponse.name+" "+genelResponse.surname} email={genelResponse.email} sifre={genelResponse.sifre} telefon={genelResponse.telefon}/>
+      <CustomCard headline={"Email"} infoo={genelResponse.email} name={genelResponse.name} surname={genelResponse.surname} sifre={genelResponse.sifre} telefon={genelResponse.telefon}/>
+      <CustomCard headline={"Şifre"} infoo={genelResponse.sifre} name={genelResponse.name} surname={genelResponse.surname} email={genelResponse.email} telefon={genelResponse.telefon}/>
+      <CustomCard headline={"Telefon"} infoo={genelResponse.telefon} name={genelResponse.name} surname={genelResponse.surname} email={genelResponse.email} sifre={genelResponse.sifre}/>
       <CustomCard headline={"Doğum Günü"} infoo={birthday}/>
     </View>
   )

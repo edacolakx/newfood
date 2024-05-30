@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_RESTAURANT_BY_EMAIL , GET_URUNLER} from '../components/sorgular';
-import { Avatar } from 'react-native-paper';
+import { Avatar, Button } from 'react-native-paper';
 
-export default function Rsprofil() {
+export default function Rsprofil({navigation}) {
 
   const { genelResponse } = useSelector(state => state)
   const [getRestorants] = useMutation(GET_RESTAURANT_BY_EMAIL)
@@ -26,7 +26,6 @@ export default function Rsprofil() {
   const [id,setId]=useState()
   const [resturun,setResturun]= useState([])
   
-  console.log(genelResponse.email)
   useEffect(() => {
       if (genelResponse.email) {
           getRestorants({ variables: { email: genelResponse.email } }).then(result => {
@@ -43,39 +42,32 @@ export default function Rsprofil() {
               setAcilisSaati(result.data.getRestoran.restoran.acilisSaati)
               setKapanisSaati(result.data.getRestoran.restoran.kapanisSaati)
               setId(result.data.getRestoran.restoran.id)
+              const arra=[]
+              data.urunler.forEach(element => {
+                if (element.restoran.id == id) {
+                  arra.push(element)
+                }
+              });
+              console.log("arra",arra)
+              setResturun(arra)
           }).catch(error => {
               console.log("Error fetching data:", error);
           });
-      }
-      console.log("object",data)
-      const arra=[]
-      if (data && data.urunler) {
-        data.urunler.forEach(element => {
-          if (element.restoran.id==id) {
-            arra.push(element)
-          }
-        });
-        console.log("arra",arra)
-        setResturun(arra)
       }
   }, [genelResponse.email])
 
 
   const DATA = [
     {
-      title: 'Main dishes',
-      data: resturun.map((item)=>item.name),
+      title: 'Yemekler',
+      data:  resturun.filter((item)=>item.category.name=="yemekler").map((item)=>item.name),
     },
     {
-      title: 'Sides',
-      data:  resturun.map((item)=>item.name),
+      title: 'Tatlılar',
+      data: resturun.filter((item)=>item.category.name=="tatlılar").map((item)=>item.name),
     },
     {
-      title: 'Drinks',
-      data: resturun.map((item)=>item.name),
-    },
-    {
-      title: 'Desserts',
+      title: 'İçecekler',
       data:  resturun.filter((item)=>item.category.name=="içecekler").map((item)=>item.name),
     },
   ];
@@ -90,7 +82,6 @@ export default function Rsprofil() {
           <Text style={styles.text}> {acilisSaati}</Text>
           <Text style={styles.text}> {kapanisSaati}</Text>
           <Text style={styles.text}>{email}</Text>
-          <Text style={styles.text}>{password}</Text>
           <Text style={styles.text}>{id}</Text>
           </View>
       </View>
@@ -98,9 +89,7 @@ export default function Rsprofil() {
       </View>
           <View>
             <Text style={{fontWeight:"bold",fontSize:25}}>Ürünler</Text>
-            <FlatList data={resturun} renderItem={({item})=>(
-              <Text style={{color:"black"}}>{item.name}</Text>
-            )}/>
+           
 
     <SectionList
       sections={DATA}
@@ -114,6 +103,7 @@ export default function Rsprofil() {
         <Text style={styles.header}>{title}</Text>
       )}
     />
+    <Button onPress={()=>{navigation.navigate("Urunler",{resturun:resturun})}}>Urunler</Button>
           </View>
     </View>
   )
@@ -130,5 +120,12 @@ const styles = StyleSheet.create({
   },
   avatar:{
     marginTop:5
+  },
+  header:{
+    fontSize:30,
+    fontWeight:"bold"
+  },
+  item:{
+
   }
 })

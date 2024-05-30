@@ -1,5 +1,5 @@
 const INITIAL_STATE={
-    email:"",urun:[],stat:"",modal:false,miktar:1,name:"",surname:"",sepetmiktar:0,adresforres:"",sifre:""
+    email:"",urun:[],stat:"",modal:false,miktar:1,name:"",surname:"",sepetmiktar:0,adresforres:"",sifre:"",id:0,telefon:""
 }
 const genelResponseReducer= (state=INITIAL_STATE,action)=>{
     switch (action.type) {
@@ -23,6 +23,10 @@ const genelResponseReducer= (state=INITIAL_STATE,action)=>{
                 return {...state,adresforres:action.payload}
         case "SET_SIFRE":
                 return {...state,sifre:action.payload}
+        case "SET_ID":
+                return {...state,id:action.payload}
+        case "SET_TELEFON":
+                return {...state,telefon:action.payload}
         default:
            return state
     }

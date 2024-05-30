@@ -9,6 +9,8 @@ import { Card, DefaultTheme, Modal, Portal, Provider as PaperProvider, TextInput
 import {  } from 'react-native-gesture-handler';
 import { Icon } from '@rneui/themed';
 import { useSelector } from 'react-redux';
+import { useMutation } from '@apollo/client';
+import { SIPARIS_EKLE } from '../components/sorgular';
 
 
 export default function MapScreen({navigation}) {
@@ -109,8 +111,24 @@ export default function MapScreen({navigation}) {
   
 const [modal,setModal] = useState(false)
 const hideModal = () => setModal(false);
+const [siparisEkleMutation] = useMutation(SIPARIS_EKLE);
 
-
+const siparisEkleHandler = () => {
+  siparisEkleMutation({
+    variables: {
+      siparisItems: [
+        {siparisTarihi: "2024-05-20T10:30:15", teslimTarihi: "2024-05-25T11:30:00", tutar: 50.0, durum: "Bekliyor", urun: 2, miktar: 2},
+        {siparisTarihi: "2024-05-20T10:30:15", teslimTarihi: "2024-05-25T11:30:00", tutar: 50.0, durum: "Bekliyor", urun: 3, miktar: 5}
+      ]
+    }
+  }).then(result => {
+    // Başarılı bir şekilde sipariş eklendiğinde yapılacak işlemler
+    console.log('Sipariş başarıyla eklendi:', result);
+  }).catch(error => {
+    // Sipariş eklerken bir hata oluştuğunda yapılacak işlemler
+    console.error('Sipariş eklenirken hata oluştu:', error);
+  });
+}
   return (
     <ScrollView style={{flex:1}}>
 

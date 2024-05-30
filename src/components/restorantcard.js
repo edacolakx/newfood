@@ -1,10 +1,11 @@
 import { View, Text,StyleSheet ,Image, TouchableOpacity} from 'react-native'
 import React from 'react'
-import { Card } from 'react-native-paper'
+import { Avatar, Card } from 'react-native-paper'
 
 export default function Restorantcard(props) {
   return (
    <TouchableOpacity onPress={()=>{props.navigation.navigate("Restorant",{
+    id:props.restoran_id,
     resim:props.resim,
     min:props.min,
     isim:props.restoran_name,
@@ -12,11 +13,8 @@ export default function Restorantcard(props) {
    })}}>
         <View style={style.card}>
             <View style={{marginRight:10}}>
-            <Image
-               style={{ width: 90, height: 90 }}
-               source={{
-                   uri: props.resim,
-                }}/>
+           
+                <Avatar.Image size={90} source={{uri:props.resim}}/>
             </View>
             <View>
                 <View style={{height:60}}>
@@ -43,7 +41,7 @@ const style=StyleSheet.create({
     card:{
         flexDirection:"row",
         marginBottom:10,
-        backgroundColor:"#ffb9b9",
+        backgroundColor:"white",
         height:100
     }
 })

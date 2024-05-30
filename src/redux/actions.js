@@ -59,3 +59,15 @@ export const setSifre=(sifre)=>{
         payload:sifre
     }
 }    
+export const setId=(id)=>{
+    return{
+        type:"SET_ID",
+        payload:id
+    }
+}    
+export const setTelefon=(telefon)=>{
+    return{
+        type:"SET_TELEFON",
+        payload:telefon
+    }
+}    

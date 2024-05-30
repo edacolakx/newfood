@@ -40,6 +40,7 @@ import Urunekle from './restorantpages/urunekle';
 import Yenideneme from './restorantpages/yenideneme';
 import SiparisdetayUser from './pages/siparisdetay';
 import ResLogin from './restorantpages/reslogin';
+import Urunler from './restorantpages/urunler';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -151,6 +152,7 @@ export default function App() {
         <Stack.Screen name='Yenideneme' component={Yenideneme}/>
         <Stack.Screen name='ResLogin' component={ResLogin}/>
         <Stack.Screen name='SiparisdetayUser' component={SiparisdetayUser}/>
+        <Stack.Screen name='Urunler' component={Urunler}/>
       </Stack.Navigator>
     </NavigationContainer>
           </PaperProvider>
