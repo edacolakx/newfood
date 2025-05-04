@@ -13,14 +13,14 @@ import { useSelector } from 'react-redux';
     const [eposta,setEmail]=useState('')
     const [telefon,setPhone]=useState('')
     const [sifre,setPassword]=useState('')
-    const [oldsifrre,setOldSifre]=useState('')
+    const [oldPassword,setOldPassword]=useState('')
 
     function onName(tex){setName(tex)}
     function onSurname(tex){setSurname(tex)}
     function onEmail(tex){setEmail(tex)}
     function onPhone(tex){setPhone(tex)}
     function onPassword(tex){setPassword(tex)}
-    function onOldsifre(tex){setOldSifre(tex)}
+    function onOldPassword(tex){oldPassword(tex)}
 
       function showModal(){
           setVisible(true)
@@ -89,10 +89,10 @@ import { useSelector } from 'react-redux';
                 props.headline == "Şifre" ? (
                     <View style={styles.editview}>
                         <ExitIcon/>
-                        <TextInput style={styles.input} onChangeText={onOldsifre} placeholder='Mevcut Şifrenizi Yazınız' label='Eski Şifre' mode='outlined' ></TextInput>
+                        <TextInput style={styles.input} onChangeText={onOldPassword} placeholder='Mevcut Şifrenizi Yazınız' label='Eski Şifre' mode='outlined' ></TextInput>
                         <TextInput style={styles.input} onChangeText={onPassword} placeholder='Yeni Şifrenizi Yazınız' label='Yeni Şifre' mode='outlined'></TextInput>
                     <Button onPress={()=>{
-                      if(oldsifrre==props.sifre){
+                      if(oldPassword==props.sifre){
 
                         nameupdate(parseInt(genelResponse.id),props.name,props.surname,props.email,props.telefon,sifre,"Kullanici")
                       }else{
